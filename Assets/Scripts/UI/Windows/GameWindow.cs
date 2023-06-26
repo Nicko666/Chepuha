@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 public class GameWindow : Window
 {
@@ -13,13 +12,20 @@ public class GameWindow : Window
     [SerializeField] Button _input;
     [SerializeField] Button _back;
 
+    TouchScreenKeyboard _keyboard;
+
     protected override void Awake()
     {
         base.Awake();
 
         _input.onClick.AddListener(OnInput);
         _back.onClick.AddListener(OnBack);
-    
+
+        _inputField.onEndEdit.AddListener(OnEndEdit);
+
+        _keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+        _keyboard.active = false;
+
     }
 
     protected override void OnEnable()
@@ -40,20 +46,40 @@ public class GameWindow : Window
 
     }
 
-    public override void OnEscape() => _windowsManager.OpenWindow(0);
+    public override void OnEscape() => OnBack();
 
     public override void OnEscapeHold() => _windowsManager.OpenWindow(0);
 
+    public void OnEndEdit(string text)
+    {
+        //Save(text);
+
+        _inputField.text = text;
+
+        if (_keyboard.status == TouchScreenKeyboard.Status.Done)
+        {
+            OnInput();
+
+        }
+
+    }
+
     void OnInput()
     {
-        _gameManager.Que.Players[_gameManager.Position].answers[Array.IndexOf(new Form().Questions, _gameManager.Que.Questions[_gameManager.Position])] = _inputField.text;
+        Save(_inputField.text);
+
         _gameManager.ChangePosition(_gameManager.Position + 1);
+
+        _inputField.ActivateInputField();
+
     }
 
     void OnBack()
     {
-        _gameManager.Que.Players[_gameManager.Position].answers[Array.IndexOf(new Form().Questions, _gameManager.Que.Questions[_gameManager.Position])] = _inputField.text;
+        Save(_inputField.text);
+        
         _gameManager.ChangePosition(_gameManager.Position - 1);
+
     }
 
     void OnPositionChange(Player player, string qwestion)
@@ -64,9 +90,12 @@ public class GameWindow : Window
 
         _inputField.text = player.answers[Array.IndexOf(new Form().Questions, qwestion)];
 
-        _inputField.ActivateInputField();
-
     }
 
+    void Save(string text)
+    {
+        _gameManager.Que.Players[_gameManager.Position].answers[Array.IndexOf(new Form().Questions, _gameManager.Que.Questions[_gameManager.Position])] = text;
+
+    }
 
 }

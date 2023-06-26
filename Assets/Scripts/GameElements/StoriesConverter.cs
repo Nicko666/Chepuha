@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,11 +13,11 @@ public class StoriesConverter : MonoBehaviour
     [SerializeField] TextAsset _numberActions;
     [SerializeField] TextAsset _events;
 
-    string[] _charactersWords; // new string[] { "text" };
-    string[] _placesWords = new string[] { "text" };
-    string[] _oneActionsWords = new string[] { "text" };
-    string[] _numberActionsWords = new string[] { "text" };
-    string[] _eventsWords = new string[] { "text" };
+    string[] _charactersWords; 
+    string[] _placesWords;
+    string[] _oneActionsWords;
+    string[] _numberActionsWords;
+    string[] _eventsWords;
 
     private void Awake()
     {
@@ -32,7 +31,7 @@ public class StoriesConverter : MonoBehaviour
 
     string[] Words(TextAsset textFile)
     {
-        return Regex.Split(textFile.text, "\n|\r|\r\n");
+        return Regex.Split(textFile.text, "\n|\r\n");
 
     }
 

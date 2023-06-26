@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,9 +26,9 @@ public class StoriesWindow : Window
 
     }
 
-    public override void OnEscape() => _windowsManager.OpenWindow(0);
+    public override void OnEscape() => _windowsManager.ShowСonfirmationMessage(OnMenu, Open, "Выйти в меню? Несохранённые истории будут удалены");
 
-    public override void OnEscapeHold() => _windowsManager.OpenWindow(0);
+    public override void OnEscapeHold() => _windowsManager.ShowСonfirmationMessage(OnMenu, Open, "Выйти в меню? Несохранённые истории будут удалены");
 
     void OnSaveStory()  => _gameManager.SaveStory(_storiesScroll.CurrentContent);
 

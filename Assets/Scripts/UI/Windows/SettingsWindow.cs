@@ -22,11 +22,8 @@ public class SettingsWindow : Window
 
         _settingsManager = SettingsManager.Instance;
 
-        //_volume.interactable = false;
         _volumeSlider.onValueChanged.AddListener(OnVolume);
-        //_color.interactable = false;
         _colorSlider.onValueChanged.AddListener(OnColor);
-        //_font.interactable = false;
         _fontSlider.onValueChanged.AddListener(OnFont);
         _menu.onClick.AddListener(OnMenu);
 

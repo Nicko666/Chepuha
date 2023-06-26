@@ -38,7 +38,29 @@ public class GameManager : Singleton<GameManager>, IDataPersistence
         SavedStories = data.stories;
 
         ChangePlayersAndQue(data.players, data.queByPlayer);
-        
+
+        List<string> oldStories = LoadOldStories();
+
+        if (oldStories.Count > 0)
+        {
+            SavedStories.AddRange(oldStories);
+        }
+
+    }
+
+    public List<string> LoadOldStories()
+    {
+        List<string> oldStories = new();
+
+        int count = PlayerPrefs.GetInt("StoriesNumber", 0);
+
+        for (int i = 0; i < count; i++)
+        {
+            oldStories.Add(PlayerPrefs.GetString("Story" + i, "Невозможно загрузить"));
+        }
+
+        return oldStories;
+
     }
 
     public void SaveData(ref Data data)
