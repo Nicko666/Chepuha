@@ -31,8 +31,6 @@ public class PersistanceManager : Singleton<PersistanceManager>
 
     void LoadData()
     {
-        Debug.Log("LoadingData");
-
         _data = _dataHandler.Load();
 
         if ( _data == null )
@@ -49,8 +47,6 @@ public class PersistanceManager : Singleton<PersistanceManager>
 
     void SaveData()
     {
-        Debug.Log("SaveData");
-
         foreach (var item in _dataPersistanceObjects)
         {
             item.SaveData(ref _data);

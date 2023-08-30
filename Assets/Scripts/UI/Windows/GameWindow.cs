@@ -12,7 +12,7 @@ public class GameWindow : Window
     [SerializeField] Button _input;
     [SerializeField] Button _back;
 
-    TouchScreenKeyboard _keyboard;
+    [SerializeField] AndroidInputFieldFix _androidInput;
 
     protected override void Awake()
     {
@@ -21,10 +21,7 @@ public class GameWindow : Window
         _input.onClick.AddListener(OnInput);
         _back.onClick.AddListener(OnBack);
 
-        _inputField.onEndEdit.AddListener(OnEndEdit);
-
-        _keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
-        _keyboard.active = false;
+        _androidInput.onSubmit.AddListener(OnInput);
 
     }
 
@@ -50,17 +47,14 @@ public class GameWindow : Window
 
     public override void OnEscapeHold() => _windowsManager.OpenWindow(0);
 
-    public void OnEndEdit(string text)
+
+    void OnInput(string text)
     {
-        //Save(text);
+        Save(text);
 
-        _inputField.text = text;
+        _gameManager.ChangePosition(_gameManager.Position + 1);
 
-        if (_keyboard.status == TouchScreenKeyboard.Status.Done)
-        {
-            OnInput();
-
-        }
+        _inputField.ActivateInputField();
 
     }
 
@@ -88,7 +82,9 @@ public class GameWindow : Window
 
         _qwestion.text = qwestion;
 
-        _inputField.text = player.answers[Array.IndexOf(new Form().Questions, qwestion)];
+        string playerAnswer = player.answers[Array.IndexOf(new Form().Questions, qwestion)];
+
+        _androidInput.ChangeText(playerAnswer);
 
     }
 
@@ -97,5 +93,6 @@ public class GameWindow : Window
         _gameManager.Que.Players[_gameManager.Position].answers[Array.IndexOf(new Form().Questions, _gameManager.Que.Questions[_gameManager.Position])] = text;
 
     }
+
 
 }
