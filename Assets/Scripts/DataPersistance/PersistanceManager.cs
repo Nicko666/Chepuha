@@ -10,8 +10,6 @@ public class PersistanceManager : Singleton<PersistanceManager>
 
     List<IDataPersistence> _dataPersistanceObjects;
 
-    
-
 
     private void Start()
     {
@@ -56,12 +54,19 @@ public class PersistanceManager : Singleton<PersistanceManager>
 
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            SaveData();
+        }
+    }
+
     private void OnApplicationQuit()
     {
         SaveData();
 
     }
-
     private List<IDataPersistence> DataPersistanceObjects()
     {
         IEnumerable<IDataPersistence> dataPersistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
