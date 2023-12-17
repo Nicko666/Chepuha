@@ -43,7 +43,7 @@ public class PersistanceManager : Singleton<PersistanceManager>
 
     }
 
-    void SaveData()
+    public void SaveData()
     {
         foreach (var item in _dataPersistanceObjects)
         {
