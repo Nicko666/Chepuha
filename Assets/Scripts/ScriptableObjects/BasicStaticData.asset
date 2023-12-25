@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab0154b4dca2f0a45aaa9daaf4337eeb, type: 3}
+  m_Name: BasicStaticData
+  m_EditorClassIdentifier: 
+  colors:
+  - {r: 1, g: 0.199, b: 0.199, a: 1}
+  - {r: 0.496, g: 0.496, b: 0.099199995, a: 1}
+  - {r: 0.12972064, g: 0.645, b: 0.12972064, a: 1}
+  - {r: 0.12059999, g: 0.603, b: 0.603, a: 1}
+  - {r: 0.44174114, g: 0.44174114, b: 0.894, a: 1}
+  - {r: 0.70199996, g: 0.353808, b: 0.70199996, a: 1}
+  fontAssets:
+  - {fileID: 11400000, guid: ff27dc411baa5d44ca466a48dbdc6fea, type: 2}
+  - {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - {fileID: 11400000, guid: cdeae95b2e306004c8bd9df2e56c1c50, type: 2}
+  - {fileID: 11400000, guid: b94193a899c39124f8f893bc4b106bc3, type: 2}
+  - {fileID: 11400000, guid: 0ed7fba47aa907f42ac5dd4db3ca454a, type: 2}
+  - {fileID: 11400000, guid: 24d0ab6e72b0e474ab1f7c3855b0d086, type: 2}
+  - {fileID: 11400000, guid: baf83072ceec93c4ebdd47279a818753, type: 2}
+  - {fileID: 11400000, guid: 80dbb5b66cb93af4d83f6b694b95e7f9, type: 2}
+  maxPlayersNumber: 5
+  blank: {fileID: 11400000, guid: e819a5a3208ee474c80ef90ad131b30a, type: 2}

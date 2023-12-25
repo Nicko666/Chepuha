@@ -2,9 +2,9 @@ using UnityEngine;
 
 public interface IDataPersistence
 {
-    void LoadData(Data data);
+    void LoadData(LocalData data);
 
-    void SaveData(ref Data data);
+    void SaveData(ref LocalData data);
 
 
 }

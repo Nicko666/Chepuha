@@ -15,11 +15,11 @@ public class FileDataHandler
 
     }
 
-    public Data Load()
+    public LocalData Load()
     {
         string fullPath = Path.Combine(_filePath, _fileName);
 
-        Data data = null;
+        LocalData data = null;
 
         if (File.Exists(fullPath))
         {
@@ -34,7 +34,7 @@ public class FileDataHandler
                     }
                 }
 
-                data = JsonUtility.FromJson<Data>(dataToLoad);
+                data = JsonUtility.FromJson<LocalData>(dataToLoad);
             }
             catch (Exception e)
             {
@@ -46,7 +46,7 @@ public class FileDataHandler
 
     }
 
-    public void Save(Data data)
+    public void Save(LocalData data)
     {
         string fullPath = Path.Combine(_filePath, _fileName);
 
