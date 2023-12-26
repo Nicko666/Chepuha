@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public abstract class GameSavedStoriesView : MonoBehaviour
+public abstract class SettingsVolumeView : MonoBehaviour
 {
-    protected GameSavedStoriesViewModel viewModel;
+    protected SettingsVolumeViewModel viewModel;
 
 
-    public virtual void Init(GameSavedStoriesViewModel viewModel)
+    public virtual void Init(SettingsVolumeViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewModelUnsubscribe();
@@ -18,7 +18,7 @@ public abstract class GameSavedStoriesView : MonoBehaviour
     }
 
     protected abstract void ViewModelSubscribe();
-    
+
     protected abstract void ViewModelUnsubscribe();
 
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6929903690998150662}
   - component: {fileID: 7211086731887901714}
   - component: {fileID: 3823700111951721179}
+  - component: {fileID: 8384498026284485917}
   m_Layer: 5
   m_Name: DOSpring_Button (TMP)
   m_TagString: Untagged
@@ -168,6 +169,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 5012174376941964563}
+--- !u!114 &8384498026284485917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055908385097571175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a1fe990e35c2b4498c0509c3f240fab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectable: {fileID: 7211086731887901714}
 --- !u!1 &8446552982402872263
 GameObject:
   m_ObjectHideFlags: 0

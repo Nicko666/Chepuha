@@ -1,14 +1,14 @@
-public abstract class GameViewModel
+﻿public abstract class SettingsViewModel
 {
-    protected GameModel model;
-    
+    protected SettingsModel model;
 
-    public GameViewModel(GameModel gameModel)
+
+    public SettingsViewModel(SettingsModel model)
     {
         if (this.model != null)
             ViewModelUnsubscribe();
 
-        this.model = gameModel;
+        this.model = model;
 
         if (this.model != null)
             ViewModelSubscribe();

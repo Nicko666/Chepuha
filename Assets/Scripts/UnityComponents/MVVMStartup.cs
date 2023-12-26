@@ -8,26 +8,42 @@ public class MVVMStartup : MonoBehaviour, IDataPersistence
     List<ILocaldataModel> localdataModels;
 
 
-    public void LoadData(LocalData data)
+    public void LoadData(LocalData localData)
     {
         localdataModels = new();
 
-        GameModel gameModel = new(data);
+
+        GameModel gameModel = new(localData);
         localdataModels.Add(gameModel);
 
         GameQuestionnaireViewModel gameQuestionnaireViewModel = new GameQuestionnaireViewModel(gameModel, staticData);
         var gameQuestionnaireViews = GetComponents<GameQuestionnaireView>();
         foreach(var view in gameQuestionnaireViews)
-        {
             view.Init(gameQuestionnaireViewModel);
-        }
 
         GameSavedStoriesViewModel gameSavedStoriesViewModel = new GameSavedStoriesViewModel(gameModel);
         var gameSavedStoriesViews = GetComponents<GameSavedStoriesView>();
         foreach (var view in gameSavedStoriesViews)
-        {
             view.Init(gameSavedStoriesViewModel);
-        }
+
+
+        SettingsModel settingsModel = new(localData);
+        localdataModels.Add(settingsModel);
+
+        SettingsVolumeViewModel settingsVolumeViewModel = new(settingsModel);
+        var settingsVolumeViews = GetComponents<SettingsVolumeView>();
+        foreach (var view in settingsVolumeViews)
+            view.Init(settingsVolumeViewModel);
+
+        SettingsColorViewModel settingsColorViewModel = new(settingsModel, staticData);
+        var settingsColorViews = GetComponents<SettingsColorView>();
+        foreach (var view in settingsColorViews)
+            view.Init(settingsColorViewModel);
+
+        SettingsFonrViewModel settingsFonrViewModel = new(settingsModel, staticData);
+        var settingsFontView = GetComponents<IInit<SettingsFonrViewModel>>();
+        foreach (var view in settingsFontView)
+            view.Init(settingsFonrViewModel);
 
     }
 
