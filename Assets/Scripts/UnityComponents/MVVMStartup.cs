@@ -16,12 +16,12 @@ public class MVVMStartup : MonoBehaviour, IDataPersistence
         GameModel gameModel = new(localData);
         localdataModels.Add(gameModel);
 
-        GameQuestionnaireViewModel gameQuestionnaireViewModel = new GameQuestionnaireViewModel(gameModel, staticData);
-        var gameQuestionnaireViews = GetComponents<GameQuestionnaireView>();
+        GameQuestionnaireSelectViewModel gameQuestionnaireViewModel = new GameQuestionnaireSelectViewModel(gameModel, staticData);
+        var gameQuestionnaireViews = GetComponents<IInit<GameQuestionnaireSelectViewModel>>();
         foreach(var view in gameQuestionnaireViews)
             view.Init(gameQuestionnaireViewModel);
 
-        GameSavedStoriesViewModel gameSavedStoriesViewModel = new GameSavedStoriesViewModel(gameModel);
+        GameSavedStoriesSelectViewModel gameSavedStoriesViewModel = new GameSavedStoriesSelectViewModel(gameModel);
         var gameSavedStoriesViews = GetComponents<GameSavedStoriesView>();
         foreach (var view in gameSavedStoriesViews)
             view.Init(gameSavedStoriesViewModel);

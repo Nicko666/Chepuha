@@ -1,27 +1,39 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GameQuestionnaireSettingsView : GameQuestionnaireView
+public abstract class GameQuestionnaireSettingsView : MonoBehaviour, IInit<GameQuestionnaireSelectViewModel>
 {
-    [SerializeField] TMP_Text playersNumberText;
-    [SerializeField] TMP_Text byPlayerText;
+    protected GameQuestionnaireSelectViewModel viewModel;
 
 
-    protected override void ViewModelSubscribe()
+    public void Init(GameQuestionnaireSelectViewModel viewModel)
+    {
+        if (this.viewModel != null)
+            ViewModelUnsubscribe();
+
+        this.viewModel = viewModel;
+
+        if (this.viewModel != null)
+            ViewModelSubscribe();
+
+        ViewModelUpdate();
+
+    }
+
+    void ViewModelSubscribe()
     {
         viewModel.isByPlayer.onValueChanged += OutputQueue;
         viewModel.answersListsCount.onValueChanged += OutputPlayerNumbers;
 
     }
 
-    protected override void ViewModelUnsubscribe()
+    void ViewModelUnsubscribe()
     {
         viewModel.isByPlayer.onValueChanged -= OutputQueue;
         viewModel.answersListsCount.onValueChanged -= OutputPlayerNumbers;
 
     }
 
-    protected override void ViewModelUpdate()
+    void ViewModelUpdate()
     {
         OutputQueue(viewModel.isByPlayer.Value);
         OutputPlayerNumbers(viewModel.answersListsCount.Value);
@@ -29,11 +41,8 @@ public class GameQuestionnaireSettingsView : GameQuestionnaireView
     }
 
 
-    void OutputQueue(bool byPlayer)
-    {
-        byPlayerText.text = byPlayer? "по игроку" : "по истории";
-
-    }
+    protected abstract void OutputQueue(bool byPlayer);
+   
     public void InputQueue()
     {
         viewModel.InputQueue();
@@ -43,25 +52,9 @@ public class GameQuestionnaireSettingsView : GameQuestionnaireView
     public void InputPlayerNumbers()
     {
         viewModel?.InputAnswersListsCount();
-
     }
 
-    void OutputPlayerNumbers(int value)
-    {
-        switch (value)
-        {
-            case 1:
-                playersNumberText.text = "1 игрок";
-                break;
-            case > 4:
-                playersNumberText.text = $"{value} игроков";
-                break;
-            case > 1:
-                playersNumberText.text = $"{value} игрока";
-                break;
-        }
-
-    }
-
+    protected abstract void OutputPlayerNumbers(int value);
+    
 
 }

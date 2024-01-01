@@ -1,15 +1,25 @@
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-public class GameQuestionnaireMixedStoriesView : GameQuestionnaireView
+public abstract class GameQuestionnaireMixedStoriesViewn : MonoBehaviour, IInit<GameQuestionnaireSelectViewModel> 
 {
-    [SerializeField] DOSlideTMP_Text textObject;
-    [SerializeField] Selectable buttonNext;
-    [SerializeField] Selectable buttonPrevious;
-    [SerializeField] Selectable saveButton;
+    protected GameQuestionnaireSelectViewModel viewModel;
 
 
-    protected override void ViewModelSubscribe()
+    public void Init(GameQuestionnaireSelectViewModel viewModel)
+    {
+        if (this.viewModel != null)
+            ViewModelUnsubscribe();
+
+        this.viewModel = viewModel;
+
+        if (this.viewModel != null)
+            ViewModelSubscribe();
+
+        ViewModelUpdate();
+
+    }
+
+    void ViewModelSubscribe()
     {
         viewModel.selectedMixedStoryText.onValueChanged += OutputMixedStoryText;
         viewModel.selectedMixedStoryIsSaved.onValueChanged += OutputSelectedMixedStoryIsSaved;
@@ -17,7 +27,7 @@ public class GameQuestionnaireMixedStoriesView : GameQuestionnaireView
         viewModel.isLastMixedStory.onValueChanged += OutputNextButtonInteractive;
     }
 
-    protected override void ViewModelUnsubscribe()
+    void ViewModelUnsubscribe()
     {
         viewModel.selectedMixedStoryText.onValueChanged -= OutputMixedStoryText;
         viewModel.selectedMixedStoryIsSaved.onValueChanged -= OutputSelectedMixedStoryIsSaved;
@@ -25,7 +35,7 @@ public class GameQuestionnaireMixedStoriesView : GameQuestionnaireView
         viewModel.isLastMixedStory.onValueChanged -= OutputNextButtonInteractive;
     }
 
-    protected override void ViewModelUpdate()
+    void ViewModelUpdate()
     {
         OutputMixedStoryText(viewModel.selectedMixedStoryText.Value);
         OutputSelectedMixedStoryIsSaved(viewModel.selectedMixedStoryIsSaved.Value);
@@ -33,42 +43,31 @@ public class GameQuestionnaireMixedStoriesView : GameQuestionnaireView
         OutputNextButtonInteractive(viewModel.isLastMixedStory.Value);
     }
 
-    
-    public void InputNextMixedStory()
+
+    public virtual void InputNextMixedStory()
     {
-        OutputMixedStoryDirection(false);
         viewModel.InputNextMixedStory();
     }
-    public void InputPreviousMixedStory()
+
+    public virtual void InputPreviousMixedStory()
     {
-        OutputMixedStoryDirection(true);
         viewModel.InputPreviousMixedStory();
     }
-    void OutputMixedStoryDirection(bool value)
-    {
-        textObject.invert = value;
-    }
-    void OutputMixedStoryText(string value)
-    {
-        textObject.text = value;
-    }
-    void OutputNextButtonInteractive(bool value)
-    {
-        buttonNext.interactable = !value;
-    }
-    void OutputPreviousButtonInteractive(bool value)
-    {
-        buttonPrevious.interactable = !value;
-    }
 
-    public void InputSaveSelectedMixedStory()
+    protected abstract void OutputMixedStoryDirection(bool value);
+
+    protected abstract void OutputMixedStoryText(string value);
+    
+    protected abstract void OutputNextButtonInteractive(bool value);
+    
+    protected abstract void OutputPreviousButtonInteractive(bool value);
+
+    public virtual void InputSaveSelectedMixedStory()
     {
         viewModel.InputSaveMixedStory();
     }
-    void OutputSelectedMixedStoryIsSaved(bool value)
-    {
-        saveButton.interactable = !value;
-    }
 
+    protected abstract void OutputSelectedMixedStoryIsSaved(bool value);
+    
 
 }

@@ -1,38 +1,43 @@
-﻿using System.Text;
+using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class GameQuestionnaireQuestionsView : GameQuestionnaireView
+public abstract class GameQuestionnaireQuestionsView : MonoBehaviour, IInit<GameQuestionnaireSelectViewModel>
 {
-    public DOSlideTMP_Text playerName;
-    public DOSlideTMP_Text question;
-    public DOSlideTMP_InputField answer;
+    protected GameQuestionnaireSelectViewModel viewModel;
 
-    public Selectable buttonPrevious, buttonMenu;
-    public Selectable buttonNext, buttonCreateStories;
+    public void Init(GameQuestionnaireSelectViewModel viewModel)
+    {
+        if (this.viewModel != null)
+            ViewModelUnsubscribe();
 
+        this.viewModel = viewModel;
 
-    protected override void ViewModelSubscribe()
+        if (this.viewModel != null)
+            ViewModelSubscribe();
+
+        ViewModelUpdate();
+
+    }
+
+    void ViewModelSubscribe()
     {
         viewModel.selectedAnswersListNumber.onValueChanged += OutputPlayerName;
         viewModel.selectedQuestion.onValueChanged += OutputQuestion;
         viewModel.selectedAnswer.onValueChanged += OutputAnswer;
         viewModel.isFirstQuestion.onValueChanged += OutputFirstQuestionButtons;
         viewModel.isLastQuestion.onValueChanged += OutputLastQuestionButtons;
-
     }
 
-    protected override void ViewModelUnsubscribe()
+    void ViewModelUnsubscribe()
     {
         viewModel.selectedAnswersListNumber.onValueChanged -= OutputPlayerName;
         viewModel.selectedQuestion.onValueChanged -= OutputQuestion;
         viewModel.selectedAnswer.onValueChanged -= OutputAnswer;
         viewModel.isFirstQuestion.onValueChanged -= OutputFirstQuestionButtons;
         viewModel.isLastQuestion.onValueChanged -= OutputLastQuestionButtons;
-
     }
 
-    protected override void ViewModelUpdate()
+    void ViewModelUpdate()
     {
         OutputPlayerName(viewModel.selectedAnswersListNumber.Value);
         OutputQuestion(viewModel.selectedQuestion.Value);
@@ -42,53 +47,30 @@ public class GameQuestionnaireQuestionsView : GameQuestionnaireView
 
     }
 
-    void OutputFirstQuestionButtons(bool value)
-    {
-        buttonPrevious.interactable = !value;
-        buttonMenu.interactable = value;
-    }
+    protected abstract void OutputFirstQuestionButtons(bool value);
 
-    void OutputLastQuestionButtons(bool value)
-    {
-        buttonNext.interactable = !value;
-        buttonCreateStories.interactable = value;
-    }
+    protected abstract void OutputLastQuestionButtons(bool value);
 
-    public void InputNextQuestion()
+    public virtual void InputNextQuestion()
     {
-        playerName.invert = false;
-        question.invert = false;
-        answer.invert = false;
         viewModel.InputNextQuestion();
     }
 
-    public void InputPreviousQuestion()
+    public virtual void InputPreviousQuestion()
     {
-        playerName.invert = true;
-        question.invert = true;
-        answer.invert = true;
         viewModel.InputPreviousQuestion();
     }
 
-    void OutputPlayerName(int value)
-    {
-        playerName.text = $"Игрок {value + 1}";
-    }
+    protected abstract void OutputPlayerName(int value);
 
-    void OutputQuestion(string value)
-    {
-        question.text = value;
-    }
+    protected abstract void OutputQuestion(string value);
 
     public void InputAnswer(string value)
     {
         viewModel.InputAnswer(value);
     }
 
-    void OutputAnswer(StringBuilder value)
-    {
-        answer.text = value.ToString();
-    }
+    protected abstract void OutputAnswer(StringBuilder value);
 
     public void InputCreateStories()
     {

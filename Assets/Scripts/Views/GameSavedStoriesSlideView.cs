@@ -1,66 +1,44 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameSavedStoriesSlideView : GameSavedStoriesView
 {
+    int lingth;
+    int selectedIndex;
+
     [SerializeField] DOSlideTMP_Text textObject;
     [SerializeField] Selectable buttonNext;
     [SerializeField] Selectable buttonPrevious;
     [SerializeField] Selectable buttonDelete;
+    [SerializeField] TMP_Text selectedIndexText;
 
 
-    public override void Init(GameSavedStoriesViewModel viewModel)
+    protected override void OutputMaxStoryIndex(int value)
     {
-        base.Init(viewModel);
-
-        if (this.viewModel != null)
-            ViewModelUpdate();
-
+        lingth = value;
+        OutputSelectedIndexText();
+    }
+    protected override void OutputSelectedStoryIndex(int value)
+    {
+        selectedIndex = value;
+        OutputSelectedIndexText();
+    }
+    void OutputSelectedIndexText()
+    {
+        selectedIndexText.text = $"{selectedIndex+1}/{lingth}";
     }
 
-    protected override void ViewModelSubscribe()
-    {
-        viewModel.selectedStoryText.onValueChanged += OutputStoryText;
-        viewModel.invertDirrection.onValueChanged += OutputStoryDirection;
-        viewModel.isFirst.onValueChanged += OutputIsFirst;
-        viewModel.isLast.onValueChanged += OutputIsLast;
-    }
-
-    protected override void ViewModelUnsubscribe()
-    {
-        viewModel.selectedStoryText.onValueChanged -= OutputStoryText;
-        viewModel.invertDirrection.onValueChanged -= OutputStoryDirection;
-        viewModel.isFirst.onValueChanged -= OutputIsFirst;
-        viewModel.isLast.onValueChanged -= OutputIsLast;
-    }
-
-    protected void ViewModelUpdate()
-    {
-        OutputStoryText(viewModel.selectedStoryText.Value);
-        OutputStoryDirection(viewModel.invertDirrection.Value);
-        OutputIsFirst(viewModel.isFirst.Value);
-        OutputIsLast(viewModel.isLast.Value);
-    }
-
-
-    public void InputNextStory()
-    {
-        viewModel.InputNextStory();
-    }
-    public void InputPrevoiusStory()
-    {
-        viewModel.InputPreviousStory();
-    }
-    void OutputIsFirst(bool value)
+    protected override void OutputIsFirst(bool value)
     {
         buttonPrevious.interactable = !value;
     }
-    void OutputIsLast(bool value)
+    protected override void OutputIsLast(bool value)
     {
         buttonNext.interactable = !value;
     }
 
-    void OutputStoryText(string value)
+    protected override void OutputStoryText(string value)
     {
         if (value == null)
         {
@@ -74,21 +52,17 @@ public class GameSavedStoriesSlideView : GameSavedStoriesView
         }
 
     }
-    void OutputStoryDirection(bool value)
+    protected override void OutputStoryDirection(bool value)
     {
         textObject.invert = value;
 
     }
 
-    public void InputDelete()
-    {
-        viewModel.InputRemoveSelectedStory();
-    }
-    void OutputDelete(bool value)
+    protected override void OutputDelete(bool value)
     {
         buttonDelete.interactable = value;
 
     }
 
-
+    
 }

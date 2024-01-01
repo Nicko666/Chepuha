@@ -1,20 +1,19 @@
 ﻿using System.Text;
 using UnityEngine;
 
-public class GameQuestionnaireViewModel : GameViewModel
+public class GameQuestionnaireSelectViewModel : GameQuestionnaireViewModelAbstract
 {
     StaticData staticData;
 
     public StringBuilder[][] answersLists;
     public ReactiveProperty<bool> isByPlayer = new();
     public ReactiveProperty<int> answersListsCount = new();
-    public int selectedQuestionNumber;
     public ReactiveProperty<int> selectedAnswersListNumber = new(); //reactive cose is playerNumber
     public ReactiveProperty<StringBuilder> selectedAnswer = new();
+    public ReactiveProperty<int> selectedQuestionNumber = new();
     public ReactiveProperty<string> selectedQuestion = new();
     public ReactiveProperty<bool> isFirstQuestion = new();
     public ReactiveProperty<bool> isLastQuestion = new();
-    //public ReactiveProperty<bool> invertDirection = new();
 
     public MixedStory[] mixedStories = new MixedStory[1] {new("")};
     public ReactiveProperty<int> selectedMixedStoryNumber = new();
@@ -24,30 +23,11 @@ public class GameQuestionnaireViewModel : GameViewModel
     public ReactiveProperty<bool> isLastMixedStory = new();
 
 
-    public GameQuestionnaireViewModel(GameModel gameModel, StaticData staticData) : base(gameModel)
+    public GameQuestionnaireSelectViewModel(GameModel gameModel, StaticData staticData) : base(gameModel)
     {
         this.staticData = staticData;
 
         ViewModelUpdate();
-    }
-
-    protected override void ViewModelSubscribe()
-    {
-        model.playersNumber.onValueChanged += OutputAnswersListsCount;
-        model.isByPlayer.onValueChanged += OutputQueue;
-    }
-
-    protected override void ViewModelUnsubscribe()
-    {
-        Debug.Log("ToDo");
-    }
-
-    void ViewModelUpdate()
-    {
-        OutputAnswersListsCount(model.playersNumber.Value);
-        OutputQueue(model.isByPlayer.Value);
-        OutputMixedStory();
-
     }
 
 
@@ -57,12 +37,7 @@ public class GameQuestionnaireViewModel : GameViewModel
             (model.playersNumber.Value < staticData.maxPlayersNumber) ? 
             (model.playersNumber.Value + 1) : 1 ;
     }
-    void OutputAnswersListsCount(int value)
-    {
-        answersListsCount.Value = value;
-        OutputAnswersLists();
-
-    }
+   
     void OutputAnswersLists()
     {
         StringBuilder[][] newAnswersLists = new StringBuilder[answersListsCount.Value][];
@@ -85,17 +60,11 @@ public class GameQuestionnaireViewModel : GameViewModel
     {
         model.isByPlayer.Value = !model.isByPlayer.Value;
     }    
-    void OutputQueue(bool value)
-    {
-        isByPlayer.Value = value;
-
-        InputFirstQuestion();
-    }
-    
+ 
     public void InputFirstQuestion()
     {
         selectedAnswersListNumber.Value = 0;
-        selectedQuestionNumber = 0;
+        selectedQuestionNumber.Value = 0;
 
         OutputQwestion();
     }
@@ -106,20 +75,20 @@ public class GameQuestionnaireViewModel : GameViewModel
             if (selectedAnswersListNumber.Value >= answersLists.Length - 1)
             {
                 selectedAnswersListNumber.Value = 0;
-                selectedQuestionNumber++;
+                selectedQuestionNumber.Value++;
             }
             else
                 selectedAnswersListNumber.Value++;
         }
         else
         {
-            if (selectedQuestionNumber >= answersLists[0].Length - 1)
+            if (selectedQuestionNumber.Value >= answersLists[0].Length - 1)
             {
-                selectedQuestionNumber = 0;
+                selectedQuestionNumber.Value = 0;
                 selectedAnswersListNumber.Value++;
             }
             else
-                selectedQuestionNumber++;
+                selectedQuestionNumber.Value++;
         }
 
         OutputQwestion();
@@ -132,20 +101,20 @@ public class GameQuestionnaireViewModel : GameViewModel
             if (selectedAnswersListNumber.Value <= 0)
             {
                 selectedAnswersListNumber.Value = (answersLists.Length - 1);
-                selectedQuestionNumber--;
+                selectedQuestionNumber.Value--;
             }
             else
                 selectedAnswersListNumber.Value--;
         }
         else
         {
-            if (selectedQuestionNumber <= 0)
+            if (selectedQuestionNumber.Value <= 0)
             {
-                selectedQuestionNumber = (answersLists[0].Length - 1);
+                selectedQuestionNumber.Value = (answersLists[0].Length - 1);
                 selectedAnswersListNumber.Value--;
             }
             else
-                selectedQuestionNumber--;
+                selectedQuestionNumber.Value--;
         }
 
         OutputQwestion();
@@ -153,11 +122,11 @@ public class GameQuestionnaireViewModel : GameViewModel
     }
     void OutputQwestion()
     {
-        selectedQuestion.Value = staticData.blank.Lines[selectedQuestionNumber].question;
+        selectedQuestion.Value = staticData.blank.Lines[selectedQuestionNumber.Value].question;
         OutputAnswer();
 
         isFirstQuestion.Value = (selectedAnswer.Value == answersLists[0][0]);
-        isLastQuestion.Value = selectedAnswersListNumber.Value == (answersLists.Length - 1) && selectedQuestionNumber == (answersLists[0].Length - 1);
+        isLastQuestion.Value = selectedAnswersListNumber.Value == (answersLists.Length - 1) && selectedQuestionNumber.Value == (answersLists[0].Length - 1);
 
     }
 
@@ -168,14 +137,14 @@ public class GameQuestionnaireViewModel : GameViewModel
     }
     public void OutputAnswer()
     {
-        selectedAnswer.Value = answersLists[selectedAnswersListNumber.Value][selectedQuestionNumber];
+        selectedAnswer.Value = answersLists[selectedAnswersListNumber.Value][selectedQuestionNumber.Value];
     }
 
     
     public void InputMixStories()
     {
         OutputMixStories();
-        OutputAnswersListsCount(answersListsCount.Value);
+        OutputPlayersNumber(answersListsCount.Value);
     }
     void OutputMixStories()
     {
@@ -250,6 +219,25 @@ public class GameQuestionnaireViewModel : GameViewModel
     }
 
 
+    protected override void OutputPlayersNumber(int value)
+    {
+        answersListsCount.Value = value;
+        OutputAnswersLists();
+    }
+
+    protected override void OutputSavedStores(string[] collection)
+    {
+        
+    }
+
+    protected override void OutputByPlayer(bool value)
+    {
+        isByPlayer.Value = value;
+
+        InputFirstQuestion();
+    }
+
+
 }
 
 public class MixedStory
@@ -262,6 +250,5 @@ public class MixedStory
         this.text = text;
         isSaved = false;
     }
-
 
 }
