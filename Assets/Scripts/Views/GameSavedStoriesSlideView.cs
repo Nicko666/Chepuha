@@ -26,6 +26,7 @@ public class GameSavedStoriesSlideView : GameSavedStoriesView
     }
     void OutputSelectedIndexText()
     {
+        selectedIndexText.gameObject.SetActive(lingth > 0);
         selectedIndexText.text = $"{selectedIndex+1}/{lingth}";
     }
 

@@ -1,6 +1,7 @@
-﻿public class GameSavedStoriesSelectViewModel : GameQuestionnaireViewModelAbstract
+﻿public class GameSavedStoriesSelectViewModel : GameSavedStoriesViewModel
 {
-    public string[] stories;
+    string[] stories;
+
     public ReactiveProperty<int> maxStoryIndex = new();
     public ReactiveProperty<int> selectedStoryIndex = new();
     public ReactiveProperty<string> selectedStoryText = new();
@@ -8,34 +9,19 @@
     public ReactiveProperty<bool> isFirst = new();
     public ReactiveProperty<bool> invertDirrection = new();
 
-    public GameSavedStoriesSelectViewModel(GameModel gameModel) : base(gameModel)
-    {
-        ViewModelUpdate();
-    }
 
-    protected override void OutputPlayersNumber(int value)
-    {
-        
-    }
+    public GameSavedStoriesSelectViewModel(GameModel gameModel) : base(gameModel) { }
+    
 
     protected override void OutputSavedStores(string[] collection)
     {
         stories = collection;
-
-
-
 
         OutputSelectedStoryIndex();
         OutputSelectedStoryText();
         OutputMaxIndex();
 
     }
-
-    protected override void OutputByPlayer(bool value)
-    {
-        
-    }
-
 
     public void InputRemoveSelectedStory()
     {
@@ -77,10 +63,6 @@
         }
 
     }
-
-
-
-
 
 
 

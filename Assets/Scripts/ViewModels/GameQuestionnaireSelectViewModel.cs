@@ -1,7 +1,6 @@
 ﻿using System.Text;
-using UnityEngine;
 
-public class GameQuestionnaireSelectViewModel : GameQuestionnaireViewModelAbstract
+public class GameQuestionnaireSelectViewModel : GameQuestionnaireViewModel
 {
     StaticData staticData;
 
@@ -223,11 +222,6 @@ public class GameQuestionnaireSelectViewModel : GameQuestionnaireViewModelAbstra
     {
         answersListsCount.Value = value;
         OutputAnswersLists();
-    }
-
-    protected override void OutputSavedStores(string[] collection)
-    {
-        
     }
 
     protected override void OutputByPlayer(bool value)
