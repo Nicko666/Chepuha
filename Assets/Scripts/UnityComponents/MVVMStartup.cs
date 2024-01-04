@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,42 +9,44 @@ public class MVVMStartup : MonoBehaviour, IDataPersistence
     List<ILocaldataModel> localdataModels;
 
 
+    [SerializeField] InitView<GameQuestionnaireViewModel>[] gameQuestionnaireViews;
+    [SerializeField] InitView<GameSavedStoriesSelectViewModel> gameSavedStoriesView;
+
+    [SerializeField] InitView<SettingsVolumeViewModel> settingsVolumeViews;
+    [SerializeField] InitView<SettingsColorViewModel> settingsColorViews;
+    [SerializeField] InitView<SettingsFonrViewModel> settingsFontView;
+
+
     public void LoadData(LocalData localData)
     {
+        MyDebug.Instance.Log("MVVMStartup.LoadData.0");
+
         localdataModels = new();
 
 
         GameModel gameModel = new(localData);
         localdataModels.Add(gameModel);
+        //problems starts here
 
-        GameQuestionnaireSelectViewModel gameQuestionnaireViewModel = new GameQuestionnaireSelectViewModel(gameModel, staticData);
-        var gameQuestionnaireViews = GetComponents<IInit<GameQuestionnaireSelectViewModel>>();
-        foreach(var view in gameQuestionnaireViews)
+        GameQuestionnaireViewModel gameQuestionnaireViewModel = new(gameModel, staticData);
+        foreach (var view in gameQuestionnaireViews)
             view.Init(gameQuestionnaireViewModel);
 
-        GameSavedStoriesSelectViewModel gameSavedStoriesViewModel = new GameSavedStoriesSelectViewModel(gameModel);
-        var gameSavedStoriesViews = GetComponents<GameSavedStoriesView>();
-        foreach (var view in gameSavedStoriesViews)
-            view.Init(gameSavedStoriesViewModel);
+        GameSavedStoriesSelectViewModel gameSavedStoriesViewModel = new(gameModel);
+        gameSavedStoriesView.Init(gameSavedStoriesViewModel);
 
 
         SettingsModel settingsModel = new(localData);
         localdataModels.Add(settingsModel);
 
         SettingsVolumeViewModel settingsVolumeViewModel = new(settingsModel);
-        var settingsVolumeViews = GetComponents<SettingsVolumeView>();
-        foreach (var view in settingsVolumeViews)
-            view.Init(settingsVolumeViewModel);
+        settingsVolumeViews.Init(settingsVolumeViewModel);
 
         SettingsColorViewModel settingsColorViewModel = new(settingsModel, staticData);
-        var settingsColorViews = GetComponents<SettingsColorView>();
-        foreach (var view in settingsColorViews)
-            view.Init(settingsColorViewModel);
+        settingsColorViews.Init(settingsColorViewModel);
 
         SettingsFonrViewModel settingsFonrViewModel = new(settingsModel, staticData);
-        var settingsFontView = GetComponents<IInit<SettingsFonrViewModel>>();
-        foreach (var view in settingsFontView)
-            view.Init(settingsFonrViewModel);
+        settingsFontView.Init(settingsFonrViewModel);
 
     }
 

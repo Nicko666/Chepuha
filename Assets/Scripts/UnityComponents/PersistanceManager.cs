@@ -14,17 +14,17 @@ public class PersistanceManager : MonoBehaviour
     private void Start()
     {
         _dataHandler = new FileDataHandler(Application.persistentDataPath, "ChepuhaData");
-        
+
         _dataPersistanceObjects = DataPersistanceObjects();
-        
+
         LoadData();
-        
+
     }
 
     void NewData()
     {
         _data = new LocalData();
-
+        MyDebug.Instance.Log("New");
     }
 
     void LoadData()
@@ -60,6 +60,7 @@ public class PersistanceManager : MonoBehaviour
         {
             SaveData();
         }
+
     }
 
     private void OnApplicationQuit()
@@ -68,12 +69,14 @@ public class PersistanceManager : MonoBehaviour
 
     }
 
+    //private List<IDataPersistence> DataPersistanceObjects()
+    //{
+    //    return new List<IDataPersistence>(GetComponents<IDataPersistence>());
+    //}
+
     private List<IDataPersistence> DataPersistanceObjects()
     {
-        IEnumerable<IDataPersistence> dataPersistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
-
-        return new List<IDataPersistence>(dataPersistanceObjects);
-
+        return new List<IDataPersistence>(FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>());
     }
 
 

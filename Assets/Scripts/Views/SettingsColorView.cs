@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public abstract class SettingsColorView : MonoBehaviour
+public abstract class SettingsColorView : InitView<SettingsColorViewModel>
 {
     protected SettingsColorViewModel viewModel;
 
 
-    public virtual void Init(SettingsColorViewModel viewModel)
+    public override void Init(SettingsColorViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewModelUnsubscribe();

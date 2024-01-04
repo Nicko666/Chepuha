@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-
-public abstract class GameQuestionnaireMixedStoriesViewn : MonoBehaviour, IInit<GameQuestionnaireSelectViewModel> 
+﻿public abstract class GameQuestionnaireMixedStoriesViewn : InitView<GameQuestionnaireViewModel> 
 {
-    protected GameQuestionnaireSelectViewModel viewModel;
+    protected GameQuestionnaireViewModel viewModel;
 
 
-    public void Init(GameQuestionnaireSelectViewModel viewModel)
+    public override void Init(GameQuestionnaireViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewModelUnsubscribe();
@@ -21,6 +19,8 @@ public abstract class GameQuestionnaireMixedStoriesViewn : MonoBehaviour, IInit<
 
     void ViewModelSubscribe()
     {
+        viewModel.mixedStoriesLength.onValueChanged += OutputMixedStoriesLength;
+        viewModel.selectedMixedStoryIndex.onValueChanged += OutputSelectedMixedStoriyIndex;
         viewModel.selectedMixedStoryText.onValueChanged += OutputMixedStoryText;
         viewModel.selectedMixedStoryIsSaved.onValueChanged += OutputSelectedMixedStoryIsSaved;
         viewModel.isFirstMixedStory.onValueChanged += OutputPreviousButtonInteractive;
@@ -29,6 +29,8 @@ public abstract class GameQuestionnaireMixedStoriesViewn : MonoBehaviour, IInit<
 
     void ViewModelUnsubscribe()
     {
+        viewModel.mixedStoriesLength.onValueChanged -= OutputMixedStoriesLength;
+        viewModel.selectedMixedStoryIndex.onValueChanged -= OutputSelectedMixedStoriyIndex;
         viewModel.selectedMixedStoryText.onValueChanged -= OutputMixedStoryText;
         viewModel.selectedMixedStoryIsSaved.onValueChanged -= OutputSelectedMixedStoryIsSaved;
         viewModel.isFirstMixedStory.onValueChanged -= OutputPreviousButtonInteractive;
@@ -37,6 +39,9 @@ public abstract class GameQuestionnaireMixedStoriesViewn : MonoBehaviour, IInit<
 
     void ViewModelUpdate()
     {
+
+        OutputMixedStoriesLength(viewModel.mixedStoriesLength.Value);
+        OutputSelectedMixedStoriyIndex(viewModel.selectedMixedStoryIndex.Value);
         OutputMixedStoryText(viewModel.selectedMixedStoryText.Value);
         OutputSelectedMixedStoryIsSaved(viewModel.selectedMixedStoryIsSaved.Value);
         OutputPreviousButtonInteractive(viewModel.isFirstMixedStory.Value);
@@ -68,6 +73,10 @@ public abstract class GameQuestionnaireMixedStoriesViewn : MonoBehaviour, IInit<
     }
 
     protected abstract void OutputSelectedMixedStoryIsSaved(bool value);
-    
+
+    protected abstract void OutputMixedStoriesLength(int value);
+
+    protected abstract void OutputSelectedMixedStoriyIndex(int value);
+
 
 }

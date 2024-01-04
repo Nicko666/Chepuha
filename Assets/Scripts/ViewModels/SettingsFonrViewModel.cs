@@ -41,6 +41,8 @@ public class SettingsFonrViewModel : SettingsViewModel
 
     public void InputSelectedFontIndex(int value)
     {
+        value = math.clamp(value, 0, fontAssets.Length - 1);
+
         model.fontIndex.Value = value;
     }
     void OutputSelectedFontIndex(int value)

@@ -1,7 +1,5 @@
-﻿using UnityEditor.Rendering;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class SettingsColorSliderView : SettingsColorView

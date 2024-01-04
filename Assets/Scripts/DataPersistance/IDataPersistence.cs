@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface IDataPersistence
 {
     void LoadData(LocalData data);

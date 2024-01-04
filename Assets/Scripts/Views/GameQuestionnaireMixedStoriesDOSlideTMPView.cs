@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,10 @@ public class GameQuestionnaireMixedStoriesDOSlideTMPView : GameQuestionnaireMixe
     [SerializeField] Selectable buttonNext;
     [SerializeField] Selectable buttonPrevious;
     [SerializeField] Selectable saveButton;
+    [SerializeField] TMP_Text numberText;
 
+    int length;
+    int selectedIndex;
 
     public override void InputNextMixedStory()
     {
@@ -21,6 +25,22 @@ public class GameQuestionnaireMixedStoriesDOSlideTMPView : GameQuestionnaireMixe
         
         base.InputPreviousMixedStory();
     }
+
+    protected override void OutputMixedStoriesLength(int value)
+    {
+        length = value;
+        OutputSelectedMixedStoriyNumberText();
+    }
+    protected override void OutputSelectedMixedStoriyIndex(int value)
+    {
+        selectedIndex = value;
+        OutputSelectedMixedStoriyNumberText();
+    }
+    void OutputSelectedMixedStoriyNumberText()
+    {
+        numberText.text = $"{selectedIndex + 1} / {length}";
+    }
+
     protected override void OutputMixedStoryDirection(bool value)
     {
         textObject.invert = value;

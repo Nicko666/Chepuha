@@ -9,6 +9,7 @@ public class DOSlideTMP_InputField : DOSlideRects
 
 
     public UnityEvent<string> onValueChange;
+    public UnityEvent<string> onSubmit;
     public UnityEvent<string> onEndEdit;
     
 
@@ -44,9 +45,9 @@ public class DOSlideTMP_InputField : DOSlideRects
         nextInputField = tempInputField;
 
         SubscribeCurrent();
-
-        ActivateInputField();
-
+        
+        if (!invert)
+            ActivateInputField();
     }
 
     public void ActivateInputField()
@@ -57,16 +58,19 @@ public class DOSlideTMP_InputField : DOSlideRects
     public void SubscribeCurrent()
     {
         currentInputField.onValueChanged.AddListener(TextInput);
+        currentInputField.onSubmit.AddListener(Submit);
         currentInputField.onEndEdit.AddListener(EndEdit);
     }
     public void UnsubscribeCurrent()
     {
         currentInputField.onValueChanged.RemoveListener(TextInput);
+        currentInputField.onSubmit.RemoveListener(Submit);
         currentInputField.onEndEdit.RemoveListener(EndEdit);
     }
 
 
     public void TextInput(string value) => onValueChange?.Invoke(value);
+    public void Submit(string value) => onSubmit?.Invoke(value);
     public void EndEdit(string value) => onEndEdit?.Invoke(value);
 
 

@@ -36,10 +36,14 @@ public class SettingsColorViewModel : SettingsViewModel
 
     public void InputColorIndex(int value)
     {
+        value = math.clamp(value, 0, colors.Value.Length);
+
         model.colorIndex.Value = value;
     }
     void OutputColorIndex(int value)
     {
+        value = math.clamp(value, 0, colors.Value.Length);
+
         selectedColorIndex.Value = value;        
     }
     void OutputColor(int value)

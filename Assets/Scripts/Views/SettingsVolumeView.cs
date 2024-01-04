@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public abstract class SettingsVolumeView : MonoBehaviour
+public abstract class SettingsVolumeView : InitView<SettingsVolumeViewModel>
 {
     protected SettingsVolumeViewModel viewModel;
 
 
-    public virtual void Init(SettingsVolumeViewModel viewModel)
+    public override void Init(SettingsVolumeViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewModelUnsubscribe();

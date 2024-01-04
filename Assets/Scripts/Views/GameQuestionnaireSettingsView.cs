@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-
-public abstract class GameQuestionnaireSettingsView : MonoBehaviour, IInit<GameQuestionnaireSelectViewModel>
+﻿public abstract class GameQuestionnaireSettingsView : InitView<GameQuestionnaireViewModel>
 {
-    protected GameQuestionnaireSelectViewModel viewModel;
+    protected GameQuestionnaireViewModel viewModel;
 
 
-    public void Init(GameQuestionnaireSelectViewModel viewModel)
+    public override void Init(GameQuestionnaireViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewModelUnsubscribe();
@@ -22,21 +20,21 @@ public abstract class GameQuestionnaireSettingsView : MonoBehaviour, IInit<GameQ
     void ViewModelSubscribe()
     {
         viewModel.isByPlayer.onValueChanged += OutputQueue;
-        viewModel.answersListsCount.onValueChanged += OutputPlayerNumbers;
+        viewModel.playersNumber.onValueChanged += OutputPlayerNumbers;
 
     }
 
     void ViewModelUnsubscribe()
     {
         viewModel.isByPlayer.onValueChanged -= OutputQueue;
-        viewModel.answersListsCount.onValueChanged -= OutputPlayerNumbers;
+        viewModel.playersNumber.onValueChanged -= OutputPlayerNumbers;
 
     }
 
     void ViewModelUpdate()
     {
         OutputQueue(viewModel.isByPlayer.Value);
-        OutputPlayerNumbers(viewModel.answersListsCount.Value);
+        OutputPlayerNumbers(viewModel.playersNumber.Value);
 
     }
 
@@ -51,7 +49,7 @@ public abstract class GameQuestionnaireSettingsView : MonoBehaviour, IInit<GameQ
 
     public void InputPlayerNumbers()
     {
-        viewModel?.InputAnswersListsCount();
+        viewModel?.InputNextPlayersNumber();
     }
 
     protected abstract void OutputPlayerNumbers(int value);

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public abstract class GameSavedStoriesView : MonoBehaviour, IInit<GameSavedStoriesSelectViewModel>
+public abstract class GameSavedStoriesView : InitView<GameSavedStoriesSelectViewModel>
 {
     protected GameSavedStoriesSelectViewModel viewModel;
 
 
-    public virtual void Init(GameSavedStoriesSelectViewModel viewModel)
+    public override void Init(GameSavedStoriesSelectViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewUnsubscribe();

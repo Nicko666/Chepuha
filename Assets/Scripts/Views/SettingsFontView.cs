@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using TMPro;
-using UnityEngine;
+﻿using TMPro;
 
-public abstract class SettingsFontView : MonoBehaviour, IInit<SettingsFonrViewModel>
+public abstract class SettingsFontView : InitView<SettingsFonrViewModel>
 {
     SettingsFonrViewModel viewModel;
 
-    public void Init(SettingsFonrViewModel viewModel)
+    public override void Init(SettingsFonrViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewUnsubscribe();

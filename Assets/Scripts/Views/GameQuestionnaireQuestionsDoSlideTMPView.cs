@@ -45,7 +45,7 @@ public class GameQuestionnaireQuestionsDoSlideTMPView : GameQuestionnaireQuestio
 
     protected override void OutputPlayerName(int value)
     {
-        playerName.text = $"Игрок {value + 1}";
+        playerName.text = $"Игрок {value}";
     }
 
     protected override void OutputQuestion(string value)
@@ -55,7 +55,16 @@ public class GameQuestionnaireQuestionsDoSlideTMPView : GameQuestionnaireQuestio
 
     protected override void OutputAnswer(StringBuilder value)
     {
-        answer.text = value.ToString();
+        answer.text = (value != null)? value.ToString() : "";
+    }
+
+    public void InputSubmit(string value)
+    {
+        InputAnswer(value);
+
+        if (viewModel.isLastQuestion.Value == false)
+            InputNextQuestion();
+
     }
 
 

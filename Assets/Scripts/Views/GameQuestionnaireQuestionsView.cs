@@ -1,11 +1,10 @@
 using System.Text;
-using UnityEngine;
 
-public abstract class GameQuestionnaireQuestionsView : MonoBehaviour, IInit<GameQuestionnaireSelectViewModel>
+public abstract class GameQuestionnaireQuestionsView : InitView<GameQuestionnaireViewModel>
 {
-    protected GameQuestionnaireSelectViewModel viewModel;
+    protected GameQuestionnaireViewModel viewModel;
 
-    public void Init(GameQuestionnaireSelectViewModel viewModel)
+    public override void Init(GameQuestionnaireViewModel viewModel)
     {
         if (this.viewModel != null)
             ViewModelUnsubscribe();
@@ -21,27 +20,27 @@ public abstract class GameQuestionnaireQuestionsView : MonoBehaviour, IInit<Game
 
     void ViewModelSubscribe()
     {
-        viewModel.selectedAnswersListNumber.onValueChanged += OutputPlayerName;
-        viewModel.selectedQuestion.onValueChanged += OutputQuestion;
-        viewModel.selectedAnswer.onValueChanged += OutputAnswer;
+        viewModel.selectedPlayerNumber.onValueChanged += OutputPlayerName;
+        viewModel.selectedQuestionText.onValueChanged += OutputQuestion;
+        viewModel.selectedAnswerText.onValueChanged += OutputAnswer;
         viewModel.isFirstQuestion.onValueChanged += OutputFirstQuestionButtons;
         viewModel.isLastQuestion.onValueChanged += OutputLastQuestionButtons;
     }
 
     void ViewModelUnsubscribe()
     {
-        viewModel.selectedAnswersListNumber.onValueChanged -= OutputPlayerName;
-        viewModel.selectedQuestion.onValueChanged -= OutputQuestion;
-        viewModel.selectedAnswer.onValueChanged -= OutputAnswer;
+        viewModel.selectedPlayerNumber.onValueChanged -= OutputPlayerName;
+        viewModel.selectedQuestionText.onValueChanged -= OutputQuestion;
+        viewModel.selectedAnswerText.onValueChanged -= OutputAnswer;
         viewModel.isFirstQuestion.onValueChanged -= OutputFirstQuestionButtons;
         viewModel.isLastQuestion.onValueChanged -= OutputLastQuestionButtons;
     }
 
     void ViewModelUpdate()
     {
-        OutputPlayerName(viewModel.selectedAnswersListNumber.Value);
-        OutputQuestion(viewModel.selectedQuestion.Value);
-        OutputAnswer(viewModel.selectedAnswer.Value);
+        OutputPlayerName(viewModel.selectedPlayerNumber.Value);
+        OutputQuestion(viewModel.selectedQuestionText.Value);
+        OutputAnswer(viewModel.selectedAnswerText.Value);
         OutputFirstQuestionButtons(viewModel.isFirstQuestion.Value);
         OutputLastQuestionButtons(viewModel.isLastQuestion.Value);
 

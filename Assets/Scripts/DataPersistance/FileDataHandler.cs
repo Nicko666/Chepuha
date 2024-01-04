@@ -38,7 +38,8 @@ public class FileDataHandler
             }
             catch (Exception e)
             {
-                Debug.LogError("Failed to load data \n" + e);
+                MyDebug.Instance.Log("Failed to load data \n" + e);
+                //Debug.LogError("Failed to load data \n" + e);
             }
         }
 
@@ -66,7 +67,8 @@ public class FileDataHandler
         }
         catch (Exception e)
         {
-            Debug.LogError("Failed to save data \n" + e);
+            MyDebug.Instance.Log("Failed to save data \n" + e);
+            //Debug.LogError("Failed to save data \n" + e);
         }
 
     }
