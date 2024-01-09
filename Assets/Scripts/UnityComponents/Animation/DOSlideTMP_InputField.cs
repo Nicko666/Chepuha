@@ -10,8 +10,10 @@ public class DOSlideTMP_InputField : DOSlideRects
 
     public UnityEvent<string> onValueChange;
     public UnityEvent<string> onSubmit;
-    public UnityEvent<string> onEndEdit;
-    
+
+
+    bool currentSubscribed = false;
+
 
     public virtual string text
     {
@@ -23,13 +25,12 @@ public class DOSlideTMP_InputField : DOSlideRects
         }
     }
 
-
-    private void OnEnable()
+    private void Awake()
     {
         SubscribeCurrent();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         UnsubscribeCurrent();
     }
@@ -57,21 +58,26 @@ public class DOSlideTMP_InputField : DOSlideRects
 
     public void SubscribeCurrent()
     {
-        currentInputField.onValueChanged.AddListener(TextInput);
-        currentInputField.onSubmit.AddListener(Submit);
-        currentInputField.onEndEdit.AddListener(EndEdit);
+        if (!currentSubscribed)
+        {
+            currentInputField.onValueChanged.AddListener(TextInput);
+            currentInputField.onSubmit.AddListener(Submit);
+            currentSubscribed = true;
+        }
     }
     public void UnsubscribeCurrent()
     {
         currentInputField.onValueChanged.RemoveListener(TextInput);
         currentInputField.onSubmit.RemoveListener(Submit);
-        currentInputField.onEndEdit.RemoveListener(EndEdit);
+        currentSubscribed = false;
     }
 
 
     public void TextInput(string value) => onValueChange?.Invoke(value);
-    public void Submit(string value) => onSubmit?.Invoke(value);
-    public void EndEdit(string value) => onEndEdit?.Invoke(value);
-
+    public void Submit(string value)
+    {
+        onSubmit?.Invoke(value);
+    }
+    
 
 }

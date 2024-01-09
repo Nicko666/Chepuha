@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameQuestionnaireQuestionsDoSlideTMPView : GameQuestionnaireQuestionsView
@@ -60,7 +61,7 @@ public class GameQuestionnaireQuestionsDoSlideTMPView : GameQuestionnaireQuestio
 
     public void InputSubmit(string value)
     {
-        InputAnswer(value);
+        viewModel.InputAnswer(value);
 
         if (viewModel.isLastQuestion.Value == false)
             InputNextQuestion();
