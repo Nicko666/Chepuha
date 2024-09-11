@@ -1,0 +1,20 @@
+{
+    "name": "Models.Settings",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:6546d7765b4165b40850b3667f981c26",
+        "GUID:51e295b63954eae4886870f4b500e04c",
+        "GUID:3072e99169645e341b424dfe3120ef42",
+        "GUID:d24283cba0ae9434488d690de927b66a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

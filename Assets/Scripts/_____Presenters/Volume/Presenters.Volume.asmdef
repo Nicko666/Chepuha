@@ -1,0 +1,16 @@
+{
+    "name": "Presenters.Volume",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4b5adaf891203254a9299e2f8280d26c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
