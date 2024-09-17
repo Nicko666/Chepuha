@@ -7,14 +7,14 @@ using System.Collections.Generic;
 namespace DataHandlers.ObjectData
 {
     [CreateAssetMenu]
-    public class QuestionnaireDatabaseObject : ScriptableObject, IDatabaseHandler<QuestionnaireDatabase>
+    public class QuestionnaireDatabaseObject : IDatabaseHandler<QuestionnaireDatabase>
     {
         [SerializeField] public int maxPlayersNumber;
         [SerializeField] public int minPlayersNumber;
 
         [SerializeField] Line[] lines;
 
-        public QuestionnaireDatabase Load()
+        public override QuestionnaireDatabase Load()
         {
             List<Data.Database.QuestionDatabase> storyQuestions = new List<Data.Database.QuestionDatabase>();
 

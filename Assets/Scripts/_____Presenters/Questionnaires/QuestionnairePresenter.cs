@@ -1,122 +1,99 @@
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using Models.Questionnaires;
+using UnityEngine.UI;
 
 namespace Presenters.Questionnaires
 {
     public class QuestionnairePresenter : IQuestionnairePresenter
     {
-        QuestionModel[] _questionModels;
+        private QuestionModel[] _questionModels;
+        private string[,] _answers;
+        private System.Random _randomSystem = new System.Random();
 
         private int _minPlayersNumber;
         private int _maxPlayersNumber;
         private int _playersNumber;
-        private List<QuestionsView> _questionsViews;
-        [SerializeField] private QuestionsView questionsViewPrefab;
-        [SerializeField] private Transform questionsViewContent;
 
-        string[] _savedStories;
-        private List<QuestionsStoryView> _questionsStoryViews;
-        [SerializeField] private QuestionsStoryView questionsStoryViewPrefab;
-        [SerializeField] private Transform questionsStoryContent;
+        private List<QuestionsPresenter> _questions = new();
+        [SerializeField] private Transform questionsContent;
+        [SerializeField] private QuestionsPresenter questionPrefab;
+        [SerializeField] private Button addPlayerButton;
 
-        public override event Action<int> onPlayersNumberRequest;
-        public override event Action<string[]> onSavedStoriesRequest;
+        public override event Action<int> onPlayersNumberChanged;
+        public override event Action<string[,]> onAnswersChanged;
 
-        public override void OnQuestionnaireChanged(QuestionModel[] questionModels) =>
+        public override void SetQuestionnaire(QuestionModel[] questionModels) =>
             _questionModels = questionModels;
 
-        public override void OnMinPlayersNumberChanged(int value) =>
+        public override void SetMinPlayersNumber(int value) =>
             _minPlayersNumber = value;
 
-        public override void OnMaxPlayersNumberChanged(int value) =>
+        public override void SetMaxPlayersNumber(int value) =>
             _maxPlayersNumber = value;
 
-        public override void OnPlayersNumberChanged(int playersNumber)
+        public override void SetPlayersNumber(int playersNumber)
         {
             _playersNumber = Math.Clamp(playersNumber, _minPlayersNumber, _maxPlayersNumber);
 
-            UpdateQuestionsViews();
+            if (_questions.Count < _playersNumber)
+                AddPlayer();
+            if (_questions.Count > _playersNumber)
+                RemovePlayer(_questions[_questions.Count - 1]);
         }
 
-        public override void OnSavedStoriesChanged(string[] savedStories)
+        private void Awake()
         {
-            _savedStories = savedStories;
-
-            UpdateQuestionsViews();
+            addPlayerButton.onClick.AddListener(AddPlayer);
         }
 
-        public void SaveStory(string story)
+        private void AddPlayer()
         {
-            List<string> newSavedStories = new();
-            newSavedStories.AddRange(_savedStories);
-            newSavedStories.Add(story);
-            onSavedStoriesRequest?.Invoke(_savedStories);
+            QuestionsPresenter newQuestions = Instantiate(questionPrefab, questionsContent);
+            _questions.Add(newQuestions);
+            newQuestions.Init(_questionModels, _randomSystem);
+            newQuestions.onRemoveRequest += RemovePlayer;
+
+            onPlayersNumberChanged.Invoke(_questions.Count);
+
+            OnPlayersNumberChanged();
         }
 
-        private void UpdateQuestionsViews()
+        private void RemovePlayer(QuestionsPresenter questions)
         {
+            questions.onRemoveRequest -= RemovePlayer;
+            _questions.Remove(questions);
+            Destroy(questions.gameObject);
 
-
-            while (_playersNumber > _questionsViews.Count)
-                _questionsViews.Add(new QuestionsView());
-            while (_playersNumber < _questionsViews.Count)
-                _questionsViews.Remove(_questionsViews[_questionsViews.Count - 1]);
+            onPlayersNumberChanged.Invoke(_questions.Count);
             
-            
-            foreach (var savedStory in _savedStories)
-                foreach (var storyViews in _questionsStoryViews)
-                    storyViews.SetIsSaveable(storyViews.Story != savedStory);
+            OnPlayersNumberChanged();
+        }
+
+        private void OnPlayersNumberChanged()
+        {
+            UpdatePlayersButtons();
+
+            string[,] answers = new string[_questions.Count, _questionModels.Length];
+            for (int i = 0; i < answers.GetLength(0); i++)
+                for (int j = 0; j < answers.GetLength(1); j++)
+                    answers[i, j] = _questions[i].GetAnswer(j);
+
+            onAnswersChanged.Invoke(answers);
+        }
+
+        private void UpdatePlayersButtons()
+        {
+            addPlayerButton.interactable = _questions.Count <= _maxPlayersNumber;
+
+            foreach (var question in _questions)
+                question.IsRemovable = _questions.Count >= _minPlayersNumber;
+        }
+
+        private void OnDestroy()
+        {
+            addPlayerButton.onClick.RemoveListener(AddPlayer);
         }
     }
-
-    public class QuestionsView
-    {
-        public Action<int> saveStory;
-
-        private QuestionPresenter questionPrefab;
-        private Transform content;
-        private QuestionPresenter[] questions;
-
-        public QuestionsView() 
-        {
-            
-
-        }
-
-        private string[] _questions;
-        private string[] _stories;
-        
-        public void OnSave()
-        {
-            // hide save button
-        }
-    }
-
-    public class QuestionsStoryView : MonoBehaviour
-    {
-        private TMP_Text _storyText;
-        private Button _saveButton;
-
-        public Action onSaveInput;
-
-        public string Story
-        {
-            get => _storyText.text;
-            set => _storyText.text = value;
-        }
-
-        private void Start() =>
-            _saveButton.onClick.AddListener(onSaveInput.Invoke);
-
-        public void SetIsSaveable(bool value) =>
-            _saveButton.interactable = value;
-
-        private void OnDestroy() =>
-            _saveButton.onClick.RemoveListener(onSaveInput.Invoke);
-    }
-
 }

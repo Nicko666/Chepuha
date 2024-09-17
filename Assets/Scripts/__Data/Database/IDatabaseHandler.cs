@@ -1,7 +1,9 @@
+using UnityEngine;
+
 namespace Data.Database
 {
-    public interface IDatabaseHandler<T>
+    public abstract class IDatabaseHandler<T> : ScriptableObject
     {
-        public T Load();
+        public abstract T Load();
     }
 }

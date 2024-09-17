@@ -1,6 +1,5 @@
 using Data.Database;
 using Data.Player;
-using System;
 
 namespace Models.Questionnaires
 {
@@ -10,41 +9,41 @@ namespace Models.Questionnaires
         private string[] _savedStores;
 
         private IQuestionnairePresenter _questionnaireUser;
+        private IStoriesPresenter _storiesPresenter;
         private ISavedStoriesPresenters _savedStoriesUser;
 
-        private QuestionDatabase[] _questionData;
-
-        private readonly Random _random = new Random();
-
-        public QuestionnaireModel(IQuestionnairePresenter questionnairePresenterUser, ISavedStoriesPresenters savedStoriesUser)
+        public QuestionnaireModel(IQuestionnairePresenter questionnairePresenterUser, IStoriesPresenter storiesPresenters, ISavedStoriesPresenters savedStoriesUser)
         {
-            if (_questionnaireUser != null) _questionnaireUser.onPlayersNumberRequest -= PlayersNumber;
-            if (_questionnaireUser != null) _questionnaireUser.onSavedStoriesRequest -= SavedStores;
             _questionnaireUser = questionnairePresenterUser;
-            if (_questionnaireUser != null) _questionnaireUser.onPlayersNumberRequest += PlayersNumber;
-            if (_questionnaireUser != null) _questionnaireUser.onSavedStoriesRequest += SavedStores;
+            _questionnaireUser.onPlayersNumberChanged += SavePlayersNumber;
+            _questionnaireUser.onAnswersChanged += InputAnswers;
 
-            if (_savedStoriesUser != null) _savedStoriesUser.onSavedStoriesRequest -= SavedStores;
+            _storiesPresenter = storiesPresenters;
+            _storiesPresenter.onSaveStoryRequest += InputSaveStory;
+
             _savedStoriesUser = savedStoriesUser;
-            if (_savedStoriesUser != null) _savedStoriesUser.onSavedStoriesRequest += SavedStores;
+            _savedStoriesUser.onSavedStoriesChanged += SaveSavedStores;
         }
 
         public void LoadData(QuestionnaireDatabase data)
         {
-            _questionnaireUser.OnMaxPlayersNumberChanged(data.MinPlayersNumber);
-            _questionnaireUser.OnMinPlayersNumberChanged(data.MaxPlayersNumber);
-
             QuestionModel[] questionModels = new QuestionModel[data.Questionnaire.Length];
             for (int i = 0; i < data.Questionnaire.Length; i++)
                 questionModels[i] = new(data.Questionnaire[i]);
 
-            _questionnaireUser.OnQuestionnaireChanged(questionModels);
+            _questionnaireUser.SetMinPlayersNumber(data.MinPlayersNumber);
+            _questionnaireUser.SetMaxPlayersNumber(data.MaxPlayersNumber);
+            _questionnaireUser.SetQuestionnaire(questionModels);
+            
+            _storiesPresenter.SetQuestionnaire(questionModels);
         }
 
         public void LoadData(PlayerData data)
         {
-            PlayersNumber(data.players);
-            SavedStores(data.stories);
+            _playersNumber = data.players;
+            _questionnaireUser.SetPlayersNumber(_playersNumber);
+            _savedStores = data.stories;
+            _savedStoriesUser.SetSaveStories(_savedStores);
         }
         public void SaveData(ref PlayerData data)
         {
@@ -52,20 +51,18 @@ namespace Models.Questionnaires
             data.stories = _savedStores;
         }
 
-        private void PlayersNumber(int playersNumber)
-        {
+        private void SavePlayersNumber(int playersNumber) =>
             _playersNumber = playersNumber;
+        
+        private void InputAnswers(string[,] answers) =>
+            _storiesPresenter?.SetAnswers(answers);
 
-            _questionnaireUser?.OnPlayersNumberChanged(playersNumber);
-        }
+        private bool InputSaveStory(string story) =>
+            _savedStoriesUser.SaveStory(story);
 
-        private void SavedStores(string[] stories)
-        {
+        private void SaveSavedStores(string[] stories) =>
             _savedStores = stories;
 
-            _questionnaireUser.OnSavedStoriesChanged(stories);
-            _savedStoriesUser.OnSavedStoriesChanged(stories);
-        }
     }
 
     public class QuestionModel

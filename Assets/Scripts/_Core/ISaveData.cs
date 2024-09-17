@@ -1,4 +1,4 @@
-namespace UData
+namespace Core
 {
     public interface ISaveData : ILoadData
     {
