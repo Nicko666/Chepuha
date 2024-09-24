@@ -7,20 +7,25 @@ namespace Presenters.Stories
 {
     internal class StoryPresenter : MonoBehaviour
     {
-        [SerializeField] private TMP_Text story;
+        [SerializeField] private TMP_Text storyName;
+        [SerializeField] private TMP_Text storyText;
         [SerializeField] private Button button;
 
         public event Action<StoryPresenter> onSaveRequest;
 
-        public string Text
+        public string StoryName
         {
-            get { return story.text; }
-            set { story.text = value; }
+            set { storyName.text = value; }
+        }
+
+        public string StoryText
+        {
+            get { return storyText.text; }
+            set { storyText.text = value; }
         }
         
         public bool IsSaved
         {
-            get { return button.interactable!; }
             set { button.interactable = value!; }
         }
 

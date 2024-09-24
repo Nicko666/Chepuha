@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Models.Questionnaires;
 using System.Text;
+using UnityEngine.Pool;
 
 namespace Presenters.Stories
 {
@@ -10,9 +11,12 @@ namespace Presenters.Stories
     {
         private QuestionModel[] _questionModels;
 
+        [SerializeField] private string prefix;
         [SerializeField] private StoryPresenter storyPrefab;
         [SerializeField] private Transform storyContent;
         private List<StoryPresenter> _stories = new();
+
+        IObjectPool<StoryPresenter> pool;
 
         public override event Predicate<string> onSaveStoryRequest;
 
@@ -21,33 +25,36 @@ namespace Presenters.Stories
 
         public override void SetAnswers(string[,] answers)
         {
-            StringBuilder[] stories = new StringBuilder[answers.GetLength(0)];
+            for (int i = _stories.Count - 1; i >= 0; i--)
+                RemoveStory(_stories[i]);
             
-            for (int i = 0; i < stories.Length; i++)
+            int playersCount = answers.GetLength(0);
+            int answersCount = answers.GetLength(1);
+
+            StringBuilder[] stories = new StringBuilder[playersCount];
+            for (int i = 0; i < playersCount; i++)
             {
-                int playerAnswerNumber = i;
-
                 stories[i] = new StringBuilder();
-
-                for (int j = 0; j < answers.GetLength(1); j++)
+                int tempPlayerNumber = i;
+                for (int j = 0; j < answersCount; j++)
                 {
-                    stories[i].Append(answers[playerAnswerNumber, j]);
+                    stories[i].Append(answers[tempPlayerNumber % playersCount, j]);
                     stories[i].Append(_questionModels[j].TextAfter);
-                    playerAnswerNumber = (playerAnswerNumber >= answers.GetLength(0)) ? 0 : playerAnswerNumber++;
+                    
+                    tempPlayerNumber++;
                 }
             }
-
-            for (int i = 0; i < _stories.Count; i++)
-                RemoveStory(_stories[i]);
+            
             for (int i = 0; i < stories.Length; i++)
-                AddStory(stories[i].ToString());
+                AddStory(stories[i].ToString(), i);
         }
 
-        private void AddStory(string story)
+        private void AddStory(string story, int index)
         {
             StoryPresenter newStory = Instantiate(storyPrefab, storyContent);
-            newStory.Text = story;
+            newStory.StoryText = story;
             newStory.onSaveRequest += SaveRequest;
+            newStory.StoryName = $"{prefix} {index + 1}";
             _stories.Add(newStory);
         }
 
@@ -59,6 +66,6 @@ namespace Presenters.Stories
         }
 
         private void SaveRequest(StoryPresenter storyPresenter) =>
-             storyPresenter.IsSaved = onSaveStoryRequest.Invoke(storyPresenter.Text);
+             storyPresenter.IsSaved = onSaveStoryRequest.Invoke(storyPresenter.StoryText);
     }
 }
