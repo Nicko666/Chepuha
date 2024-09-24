@@ -17,6 +17,7 @@ namespace Presenters.Questionnaires
         private int _playersNumber;
 
         private List<QuestionsPresenter> _questions = new();
+        [SerializeField] private string prefix = "Player";
         [SerializeField] private Transform questionsContent;
         [SerializeField] private QuestionsPresenter questionPrefab;
         [SerializeField] private Button addPlayerButton;
@@ -37,9 +38,9 @@ namespace Presenters.Questionnaires
         {
             _playersNumber = Math.Clamp(playersNumber, _minPlayersNumber, _maxPlayersNumber);
 
-            if (_questions.Count < _playersNumber)
+            while (_questions.Count < _playersNumber)
                 AddPlayer();
-            if (_questions.Count > _playersNumber)
+            while (_questions.Count > _playersNumber)
                 RemovePlayer(_questions[_questions.Count - 1]);
         }
 
@@ -50,12 +51,11 @@ namespace Presenters.Questionnaires
 
         private void AddPlayer()
         {
-            QuestionsPresenter newQuestions = Instantiate(questionPrefab, questionsContent);
-            _questions.Add(newQuestions);
-            newQuestions.Init(_questionModels, _randomSystem);
-            newQuestions.onRemoveRequest += RemovePlayer;
-
-            onPlayersNumberChanged.Invoke(_questions.Count);
+            QuestionsPresenter questions = Instantiate(questionPrefab, questionsContent);
+            _questions.Add(questions);
+            questions.Init(_questionModels, _randomSystem);
+            questions.onRemoveRequest += RemovePlayer;
+            questions.onAnswersChanged += InvokeAnswersChanged;
 
             OnPlayersNumberChanged();
         }
@@ -63,10 +63,9 @@ namespace Presenters.Questionnaires
         private void RemovePlayer(QuestionsPresenter questions)
         {
             questions.onRemoveRequest -= RemovePlayer;
+            questions.onAnswersChanged -= InvokeAnswersChanged;
             _questions.Remove(questions);
             Destroy(questions.gameObject);
-
-            onPlayersNumberChanged.Invoke(_questions.Count);
             
             OnPlayersNumberChanged();
         }
@@ -75,20 +74,30 @@ namespace Presenters.Questionnaires
         {
             UpdatePlayersButtons();
 
+            onPlayersNumberChanged.Invoke(_questions.Count);
+            
+            InvokeAnswersChanged();
+        }
+
+        private void InvokeAnswersChanged()
+        {
             string[,] answers = new string[_questions.Count, _questionModels.Length];
             for (int i = 0; i < answers.GetLength(0); i++)
                 for (int j = 0; j < answers.GetLength(1); j++)
                     answers[i, j] = _questions[i].GetAnswer(j);
-
+            
             onAnswersChanged.Invoke(answers);
         }
 
         private void UpdatePlayersButtons()
         {
-            addPlayerButton.interactable = _questions.Count <= _maxPlayersNumber;
+            addPlayerButton.interactable = _questions.Count < _maxPlayersNumber;
 
-            foreach (var question in _questions)
-                question.IsRemovable = _questions.Count >= _minPlayersNumber;
+            for (int i = 0; i < _questions.Count; i++)
+            {
+                _questions[i].IsRemovable = _questions.Count >= _minPlayersNumber;
+                _questions[i].NameText = $"{prefix} {i + 1}";
+            }
         }
 
         private void OnDestroy()

@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Models.Questionnaires;
 using System.Collections.Generic;
+using TMPro;
 
 namespace Presenters.Questionnaires
 {
     internal class QuestionsPresenter : MonoBehaviour
     {
+        [SerializeField] private TMP_Text nameText;
         [SerializeField] private QuestionPresenter questionPrefab;
         [SerializeField] private Transform questionContent;
         private List<QuestionPresenter> _questions = new();
@@ -16,8 +18,7 @@ namespace Presenters.Questionnaires
         public Action<QuestionsPresenter> onRemoveRequest;
         public Action onAnswersChanged;
 
-        public Action onAnswerRequest;
-
+        public string NameText { set { nameText.text = value; } }
         public string GetAnswer(int index) => _questions[index].Answer;
 
         public bool IsRemovable
@@ -39,16 +40,13 @@ namespace Presenters.Questionnaires
                 QuestionPresenter questionPresenter = Instantiate(questionPrefab, questionContent);
                 questionPresenter.gameObject.SetActive(true);
                 questionPresenter.Init(question.Question, question.Answers, randomSystem);
-                questionPresenter.onInputAnswer += AnswersChangrRequest;
+                questionPresenter.onAnswerChanged += InvokeAnswersChanged;
                 _questions.Add(questionPresenter);
             }
         }
 
-        private void AnswersChangrRequest()
-        {
-            
-            onAnswersChanged.Invoke();
-        }
+        private void InvokeAnswersChanged() =>
+            onAnswersChanged?.Invoke();
 
         private void OnDestroy() =>
             removeButton.onClick.RemoveListener(RemoveRequest);

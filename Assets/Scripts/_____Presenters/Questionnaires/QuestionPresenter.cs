@@ -15,7 +15,7 @@ namespace Presenters.Questionnaires
         [SerializeField] private TMP_InputField answerInputField;
         [SerializeField] private Button randomAnswerButton;
 
-        public Action onInputAnswer;
+        public Action onAnswerChanged;
 
         public string Answer => answerInputField.text;
 
@@ -35,7 +35,7 @@ namespace Presenters.Questionnaires
         }
 
         private void InputAnswer(string text) =>
-            onInputAnswer?.Invoke();
+            onAnswerChanged?.Invoke();
 
         public void InputRandomAnswer() =>
             answerInputField.text = _randomAnswers[_random.Next(_randomAnswers.Length)];
