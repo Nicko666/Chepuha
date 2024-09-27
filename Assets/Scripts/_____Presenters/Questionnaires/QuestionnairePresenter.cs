@@ -92,10 +92,11 @@ namespace Presenters.Questionnaires
         private void UpdatePlayersButtons()
         {
             addPlayerButton.interactable = _questions.Count < _maxPlayersNumber;
+            bool minPlayers = _questions.Count <= _minPlayersNumber;
 
             for (int i = 0; i < _questions.Count; i++)
             {
-                _questions[i].IsRemovable = _questions.Count >= _minPlayersNumber;
+                _questions[i].IsRemovable = minPlayers;
                 _questions[i].NameText = $"{prefix} {i + 1}";
             }
         }
