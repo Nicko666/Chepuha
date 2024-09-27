@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sprites
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 491052748d33dba4da46a4de5e622680, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - be361eb01ed3c04418252729ba833279: 21300000
+    - b4be86c38a0d6b24493a78a5484f56fd: 21300000
+    - 3feca28454287ad419ca2908f70c3248: 21300000
+    - abcddd951bab1764e8dea18b9bb4a765: 21300000
+    - eb91e968d8f7b224d9e549a824128cba: 21300000
+    - 0c4f6fa99d4dd2145a658c6f675f5920: 21300000
+    - 907b4d7b5ffd1ab47beaf5ef0e86a310: 21300000
+    - dea54c1ce36052a4aab19d34cffa36f7: 21300000
+    - c38870be86bb49e4ab7a50391bb83aba: 21300000
+    - eeb2b6ce6868e354aab2cc3880553624: 21300000
+    - 3ac06cef93c349749ad18fda4dc7aac2: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: be361eb01ed3c04418252729ba833279, type: 3}
+  - {fileID: 21300000, guid: b4be86c38a0d6b24493a78a5484f56fd, type: 3}
+  - {fileID: 21300000, guid: 3feca28454287ad419ca2908f70c3248, type: 3}
+  - {fileID: 21300000, guid: abcddd951bab1764e8dea18b9bb4a765, type: 3}
+  - {fileID: 21300000, guid: eb91e968d8f7b224d9e549a824128cba, type: 3}
+  - {fileID: 21300000, guid: 0c4f6fa99d4dd2145a658c6f675f5920, type: 3}
+  - {fileID: 21300000, guid: 907b4d7b5ffd1ab47beaf5ef0e86a310, type: 3}
+  - {fileID: 21300000, guid: dea54c1ce36052a4aab19d34cffa36f7, type: 3}
+  - {fileID: 21300000, guid: c38870be86bb49e4ab7a50391bb83aba, type: 3}
+  - {fileID: 21300000, guid: eeb2b6ce6868e354aab2cc3880553624, type: 3}
+  - {fileID: 21300000, guid: 3ac06cef93c349749ad18fda4dc7aac2, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Archive
+  - Background
+  - Frame
+  - Files
+  - Add Archive
+  - Add File
+  - Settings
+  - Volume
+  - Remove Archive
+  - Remove File
+  - Random
+  m_RenderDataMap: {}
+  m_Tag: Sprites
+  m_IsVariant: 0
