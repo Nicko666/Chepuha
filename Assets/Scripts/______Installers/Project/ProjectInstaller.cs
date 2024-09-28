@@ -35,6 +35,12 @@ public class ProjectInstaller : MonoBehaviour
         _core?.LoadData();
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+            _core?.SaveData();
+    }
+
     private void OnDestroy()
     {
         _core?.SaveData();
