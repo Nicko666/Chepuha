@@ -21,6 +21,8 @@ public class ProjectInstaller : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+
         QuestionnaireModel questionnaireModel = new(questionnairePresenter, storiesPresenter, savedStoriesPresenter);
         SettingsModel settingsModel = new(volumePresenter, fontPresenter, backgroundPresenter);
 
