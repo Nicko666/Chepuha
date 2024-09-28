@@ -96,7 +96,7 @@ namespace Presenters.Questionnaires
 
             for (int i = 0; i < _questions.Count; i++)
             {
-                _questions[i].IsRemovable = minPlayers;
+                _questions[i].IsRemovable = !minPlayers;
                 _questions[i].NameText = $"{prefix} {i + 1}";
             }
         }
