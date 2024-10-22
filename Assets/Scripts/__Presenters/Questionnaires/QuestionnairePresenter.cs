@@ -19,8 +19,10 @@ namespace Presenters.Questionnaires
         private List<QuestionsPresenter> _questions = new();
         [SerializeField] private string prefix = "Player";
         [SerializeField] private Transform questionsContent;
-        [SerializeField] private QuestionsPresenter questionPrefab;
+        [SerializeField] private QuestionsPresenter questionsPrefab;
         [SerializeField] private Button addPlayerButton;
+        [SerializeField] private RectTransform _scrollContent;
+        [SerializeField] private RectTransform _scrollContentFocusPoint;
 
         public override event Action<int> onPlayersNumberChanged;
         public override event Action<string[,]> onAnswersChanged;
@@ -51,11 +53,12 @@ namespace Presenters.Questionnaires
 
         private void AddPlayer()
         {
-            QuestionsPresenter questions = Instantiate(questionPrefab, questionsContent);
+            QuestionsPresenter questions = Instantiate(questionsPrefab, questionsContent);
             _questions.Add(questions);
             questions.Init(_questionModels, _randomSystem);
             questions.onRemoveRequest += RemovePlayer;
             questions.onAnswersChanged += InvokeAnswersChanged;
+            questions.onFocusRequest += Focus;
 
             OnPlayersNumberChanged();
         }
@@ -82,6 +85,7 @@ namespace Presenters.Questionnaires
         private void InvokeAnswersChanged()
         {
             string[,] answers = new string[_questions.Count, _questionModels.Length];
+            
             for (int i = 0; i < answers.GetLength(0); i++)
                 for (int j = 0; j < answers.GetLength(1); j++)
                     answers[i, j] = _questions[i].GetAnswer(j);
@@ -99,6 +103,13 @@ namespace Presenters.Questionnaires
                 _questions[i].IsRemovable = !minPlayers;
                 _questions[i].NameText = $"{prefix} {i + 1}";
             }
+        }
+
+        private void Focus(Vector3 position)
+        {
+            Vector3 delta = _scrollContentFocusPoint.position - position;
+
+            _scrollContent.position += delta;
         }
 
         private void OnDestroy()
