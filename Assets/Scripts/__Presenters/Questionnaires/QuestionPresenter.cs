@@ -51,13 +51,6 @@ namespace Presenters.Questionnaires
 
         public void Activate()
         {
-            StartCoroutine(ActivateAsync());
-        }
-
-        private IEnumerator ActivateAsync()
-        {
-            yield return new WaitForEndOfFrame();
-
             answerInputField.Select();
         }
 
