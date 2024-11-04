@@ -14,6 +14,7 @@ namespace Presenters.Questionnaires
         [SerializeField] private TMP_Text questionText;
         [SerializeField] private TMP_InputField answerInputField;
         [SerializeField] private Button randomAnswerButton;
+        [SerializeField] private Button inputFieldButton;
 
         public Action onAnswerChanged;
         public Action<QuestionPresenter> onAnswerSubmit;
@@ -27,6 +28,7 @@ namespace Presenters.Questionnaires
             answerInputField.onValueChanged.AddListener(AnswerChangedInvoke);
             answerInputField.onSubmit.AddListener(AnswerSubmitInvoke);
             randomAnswerButton.onClick.AddListener(InputRandomAnswer);
+            inputFieldButton.onClick.AddListener(Activate);
         }
 
         private void OnDestroy()
@@ -35,6 +37,7 @@ namespace Presenters.Questionnaires
             answerInputField.onValueChanged.RemoveListener(AnswerChangedInvoke);
             answerInputField.onSubmit.RemoveListener(AnswerSubmitInvoke);
             randomAnswerButton.onClick.RemoveListener(InputRandomAnswer);
+            inputFieldButton.onClick.RemoveListener(Activate);
         }
 
         public void Init(string question, string[] randomAnswers, System.Random randomSystem)
@@ -51,25 +54,22 @@ namespace Presenters.Questionnaires
 
         public void Activate()
         {
-            answerInputField.Select();
+            answerInputField.ActivateInputField();
         }
 
         private void AnswerSelectInvoke(string text)
         {
             onAnswerSelect?.Invoke(transform.position);
-            Debug.Log($"AnswerSelectInvoke: {text}");
         }
 
         private void AnswerChangedInvoke(string text)
         {
             onAnswerChanged?.Invoke();
-            Debug.Log($"AnswerChangedInvoke: {text}");
         }
 
         private void AnswerSubmitInvoke(string text)
         {
             onAnswerSubmit?.Invoke(this);
-            Debug.Log($"AnswerSubmitInvoke: {text}");
         }
 
         private void InputRandomAnswer() =>

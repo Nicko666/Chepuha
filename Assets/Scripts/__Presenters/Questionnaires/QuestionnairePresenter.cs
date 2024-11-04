@@ -59,6 +59,7 @@ namespace Presenters.Questionnaires
             questions.onRemoveRequest += RemovePlayer;
             questions.onAnswersChanged += InvokeAnswersChanged;
             questions.onFocusRequest += Focus;
+            questions.onLastQuestionChanged += FocusNextQuestions;
 
             OnPlayersNumberChanged();
         }
@@ -67,6 +68,8 @@ namespace Presenters.Questionnaires
         {
             questions.onRemoveRequest -= RemovePlayer;
             questions.onAnswersChanged -= InvokeAnswersChanged;
+            questions.onFocusRequest -= Focus;
+            questions.onLastQuestionChanged -= FocusNextQuestions;
             _questions.Remove(questions);
             Destroy(questions.gameObject);
             
@@ -110,6 +113,15 @@ namespace Presenters.Questionnaires
             Vector3 delta = _scrollContentFocusPoint.position - position;
 
             _scrollContent.position += delta;
+        }
+
+        private void FocusNextQuestions(QuestionsPresenter questionsPresenter)
+        {
+            int nextQuestionsIndex = _questions.IndexOf(questionsPresenter) + 1;
+
+            if (nextQuestionsIndex >= _questions.Count) return;
+
+            _questions[nextQuestionsIndex].ActivateFirstAnswer();
         }
 
         private void OnDestroy()

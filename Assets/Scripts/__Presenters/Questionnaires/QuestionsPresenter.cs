@@ -19,7 +19,7 @@ namespace Presenters.Questionnaires
         public Action<QuestionsPresenter> onRemoveRequest;
         public Action onAnswersChanged;
         public Action<Vector3> onFocusRequest;
-
+        public Action<QuestionsPresenter> onLastQuestionChanged;
         public string NameText { set { nameText.text = value; } }
         public string GetAnswer(int index) => _questions[index].GetAnswer();
 
@@ -71,7 +71,7 @@ namespace Presenters.Questionnaires
             int index = _questions.IndexOf(questionPresenter);
 
             if (index == _questions.Count - 1)
-                return;
+                onLastQuestionChanged.Invoke(this);
             else
             {
                 QuestionPresenter nextQuestion = _questions[index + 1];
@@ -82,5 +82,8 @@ namespace Presenters.Questionnaires
 
         private void FocusAnswe(Vector3 position) =>
             onFocusRequest.Invoke(position);
+
+        internal void ActivateFirstAnswer() =>
+            _questions[0].Activate();
     }
 }
