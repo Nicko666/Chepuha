@@ -1,0 +1,18 @@
+{
+    "name": "QuestionnaireController",
+    "rootNamespace": "",
+    "references": [
+        "GUID:44c575c4ca41b6a479c808c4e743ec64",
+        "GUID:d20fad02312ab924496b03df4cf3c115",
+        "GUID:fa28c69d9d36e8e4a93912bc82875673"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
