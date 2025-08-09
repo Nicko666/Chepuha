@@ -27,4 +27,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b94193a899c39124f8f893bc4b106bc3, type: 2}
   - {fileID: 11400000, guid: 0ed7fba47aa907f42ac5dd4db3ca454a, type: 2}
   - {fileID: 11400000, guid: 24d0ab6e72b0e474ab1f7c3855b0d086, type: 2}
-  maxVolume: 1
+  maxVolume: 0.93
