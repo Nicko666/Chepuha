@@ -6,8 +6,8 @@ using UnityEngine;
 
 internal class NewQuestionnairePresenter : QuestionnairePresenter
 {
-    [SerializeField] private PlayersPresenter _playersPresenter;
-    [SerializeField] private StoriesPresenter _storiesPresenter;
+    [SerializeField] private NewPlayersPresenter _playersPresenter;
+    [SerializeField] private NewStoriesPresenter _storiesPresenter;
 
     internal override event Action onInputAddNewAnswerModels;
     internal override event Action<int> onInputPlayersCountModel;

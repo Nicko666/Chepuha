@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IQuestionnaireController : IDisposable
 {
     event Action<QuestionnaireModel> onQuestionnaireModel;
+    event Action<StringBuilder> onAnswerModelChanged; // unused
     void SetDataModel(DataModel dataModel);
     void GetDataModel(ref DataModel dataModel);
     void SetBoundsModel(Vector2Int playersBounds);

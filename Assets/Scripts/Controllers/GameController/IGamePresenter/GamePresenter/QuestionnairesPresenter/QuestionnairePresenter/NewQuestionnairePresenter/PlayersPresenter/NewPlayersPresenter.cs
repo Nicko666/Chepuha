@@ -5,12 +5,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-internal class PlayersPresenter : MonoBehaviour
+internal class NewPlayersPresenter : MonoBehaviour
 {
     [SerializeField] private Button _addPlayerButton;
-    [SerializeField] private PlayerPresenter _playerPresenterPrefab;
+    [SerializeField] private NewPlayerPresenter _playerPresenterPrefab;
     [SerializeField] private Transform _playerPresentersContent;
-    private List<(PlayerPresenter presenter, StringBuilder[] playerModel)> _playerPresenters = new ();
+    private List<(NewPlayerPresenter presenter, StringBuilder[] playerModel)> _playerPresenters = new ();
     private TMP_FontAsset _fontModel;
 
     internal Action<StringBuilder, string> onInputAnswerModel;
@@ -32,9 +32,10 @@ internal class PlayersPresenter : MonoBehaviour
     {
         while (_playerPresenters.Count < questionnaireModel.playersModel.Count)
         {
-            PlayerPresenter presenter = Instantiate(_playerPresenterPrefab, _playerPresentersContent);
+            NewPlayerPresenter presenter = Instantiate(_playerPresenterPrefab, _playerPresentersContent);
             
             presenter.onInputAnswerChanged += InputAnswerChanged;
+            presenter.onInputAnswerSubmit += InputAnswerSubmit;
             presenter.onInputClearPlayerModel += InputClearPlayerModel;
             presenter.onInputRemovePlayerModel += InputRemovePlayerModel;
             
@@ -43,9 +44,10 @@ internal class PlayersPresenter : MonoBehaviour
         }
         while (_playerPresenters.Count > questionnaireModel.playersModel.Count)
         {
-            PlayerPresenter presenter = _playerPresenters[^1].presenter;
+            NewPlayerPresenter presenter = _playerPresenters[^1].presenter;
 
             presenter.onInputAnswerChanged -= InputAnswerChanged;
+            presenter.onInputAnswerSubmit -= InputAnswerSubmit;
             presenter.onInputClearPlayerModel -= InputClearPlayerModel;
             presenter.onInputRemovePlayerModel -= InputRemovePlayerModel;
 
@@ -73,12 +75,23 @@ internal class PlayersPresenter : MonoBehaviour
     private void InputAnswerChanged(StringBuilder answerModel, string text) =>
         onInputAnswerModel.Invoke(answerModel, text);
 
+    private void InputAnswerSubmit(StringBuilder answerModel)
+    {
+        var playerPresenter =
+            _playerPresenters.Find(i => Array.Exists(i.playerModel, j => j == answerModel));
+
+        int answeIndex = Array.IndexOf(playerPresenter.playerModel, answerModel);
+
+        if (playerPresenter.playerModel.Length - 1 > answeIndex)
+            playerPresenter.presenter.OutputSelectAnswer(playerPresenter.playerModel[answeIndex + 1]);
+    }
+
     private void InputAddPlayerModel() =>
         onInputAddPlayerModels.Invoke();
 
-    private void InputRemovePlayerModel(PlayerPresenter presenter) =>
+    private void InputRemovePlayerModel(NewPlayerPresenter presenter) =>
         onInputRemovePlayerModel.Invoke(_playerPresenters.Find(i => i.presenter == presenter).playerModel);
     
-    private void InputClearPlayerModel(PlayerPresenter presenter) =>
+    private void InputClearPlayerModel(NewPlayerPresenter presenter) =>
         onInputClearPlayerModel.Invoke(_playerPresenters.Find(i => i.presenter == presenter).playerModel);
 }

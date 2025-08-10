@@ -49,7 +49,6 @@ public class GameController : Controllers, IDisposable
         _gamePresenter = gamePresenter;
         _loadingPresenter = loadingPresenter;
 
-
         SceneManager.sceneLoaded += SetSceneLoaded;
         Application.focusChanged += SetFocusChanged;
         _databaseController.onLoadDatabaseModel += LoadDatabaseModel;

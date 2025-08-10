@@ -4,19 +4,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-internal class QuestionPresenter : MonoBehaviour
+internal class NewQuestionPresenter : MonoBehaviour
 {
     [SerializeField] private TMP_Text _questionText;
     [SerializeField] private TMP_InputField _answerInputField;
     [SerializeField] private Button _randomAnswerButton;
-    [SerializeField] private Button _inputFieldButton;
 
     private string[] _randomAnswers;
     private StringBuilder _answerModel;
 
     internal Action<StringBuilder, string> onInputAnswerChanged;
-    internal Action<QuestionPresenter> onInputAnswerSubmit;
-    internal Action<QuestionPresenter> onInputAnswerSelect;
+    internal Action<StringBuilder> onInputAnswerSubmit;
 
     internal void OutputQuestionModel(QuestionModel questionModel)
     {
@@ -38,30 +36,35 @@ internal class QuestionPresenter : MonoBehaviour
 
     private void Awake()
     {
-        _answerInputField.onSelect.AddListener(InputAnswerSelect);
-        _answerInputField.onValueChanged.AddListener(InputAnswerChanged);
+        _answerInputField.onEndEdit.AddListener(InputAnswerChanged);
+        //_answerInputField.onTouchScreenKeyboardStatusChanged
         _answerInputField.onSubmit.AddListener(InputAnswerSubmit);
+        _answerInputField.onSelect.AddListener(OutputAnserSelected);
         _randomAnswerButton.onClick.AddListener(InputRandomAnswer);
-        _inputFieldButton.onClick.AddListener(_answerInputField.Select);
     }
     private void OnDestroy()
     {
-        _answerInputField.onSelect.RemoveListener(InputAnswerSelect);
-        _answerInputField.onValueChanged.RemoveListener(InputAnswerChanged);
+        _answerInputField.onEndEdit.RemoveListener(InputAnswerChanged);
         _answerInputField.onSubmit.RemoveListener(InputAnswerSubmit);
+        _answerInputField.onSelect.RemoveListener(OutputAnserSelected);
         _randomAnswerButton.onClick.RemoveListener(InputRandomAnswer);
-        _inputFieldButton.onClick.RemoveListener(_answerInputField.Select);
     }
-
-    private void InputAnswerSelect(string text) =>
-        onInputAnswerSelect.Invoke(this);
 
     private void InputAnswerChanged(string text) =>
         onInputAnswerChanged.Invoke(_answerModel, text);
+    
+    private void InputRandomAnswer()
+    {
+        string randomAnswer = _randomAnswers[UnityEngine.Random.Range(0, _randomAnswers.Length)];
+        onInputAnswerChanged.Invoke(_answerModel, randomAnswer);
+    }
+
+    internal void OutputSelectAnswer() =>
+        _answerInputField.Select();
 
     private void InputAnswerSubmit(string text) =>
-        onInputAnswerSubmit.Invoke(this);
+        onInputAnswerSubmit.Invoke(_answerModel);
 
-    private void InputRandomAnswer() =>
-        _answerInputField.text = _randomAnswers[UnityEngine.Random.Range(0, _randomAnswers.Length)];
+    private void OutputAnserSelected(string text) =>
+        _answerInputField.MoveToEndOfLine(false, false);
 }

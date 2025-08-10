@@ -4,7 +4,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-public class StoriesPresenter : MonoBehaviour
+public class NewStoriesPresenter : MonoBehaviour
 {
     [SerializeField] private StoryPresenter _storyPresenterPrefab;
     [SerializeField] private RectTransform _storyPresentersContent;
@@ -30,7 +30,7 @@ public class StoriesPresenter : MonoBehaviour
             (StoryPresenter presenter, StringBuilder storyModel) storyPresenter = _storyPresenters[^1];
             storyPresenter.presenter.onInputRemoveStory -= InputSaveStory;
             _storyPresenters.Remove(storyPresenter);
-            Destroy(storyPresenter.presenter);
+            Destroy(storyPresenter.presenter.gameObject);
         }
 
         for (int i = 0; i < storiesModel.Count; i++)

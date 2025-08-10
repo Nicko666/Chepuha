@@ -7,21 +7,26 @@ using UnityEngine.UI;
 
 internal class OldSavedStoriesPresenter : SavedStoriesPresenter
 {
-    [SerializeField] private Pages _pages;
+    [SerializeField] private OldSavedStoriesPagesControl _pagesControl;
+    [SerializeField] private OldSavedStoryPresenter _currentStoryPresenter;
+    //[SerializeField] private OldSavedStoryPresenter _previousStoryPresenter;
+    [SerializeField] private TMP_Text[] _fontTexts;
     [SerializeField] private Button _deleteButton;
-    [SerializeField] private TMP_Text _deleteButtonTexts;
-    [SerializeField] private TMP_Text _storyText;
     [SerializeField] private string _noPagesText;
+    //[SerializeField] private Animator _pageAnimation;
     private List<StringBuilder> _storyModels = new();
     private int _currentPage = 0;
+
+    //private const string DeleteTrigger = "Delete";
+    //private const string NextPageTrigger = "Next";
+    //private const string PreviousPageTrigger = "Previous";
 
     internal override event Action<StringBuilder> onInputSavedStoryModelRemove;
 
     internal override void OutputFont(TMP_FontAsset font)
     {
-        _storyText.font = font;
-        _deleteButtonTexts.font = font;
-        _pages.OutputFont(font);
+        Array.ForEach(_fontTexts, fontText => fontText.font = font);
+        _pagesControl.OutputFont(font);
     }
 
     internal override void OutputSavedStories(List<StringBuilder> storyModels)
@@ -29,30 +34,46 @@ internal class OldSavedStoriesPresenter : SavedStoriesPresenter
         _storyModels = storyModels;
         _currentPage = Math.Clamp(_currentPage, 0, _storyModels.Count - 1);
 
-        _storyText.text = _storyModels.Count > 0? _storyModels[_currentPage].ToString() : _noPagesText;
+        _currentStoryPresenter.OutputStory(_storyModels.Count > 0 ? _storyModels[_currentPage].ToString() : _noPagesText, 0);
         _deleteButton.interactable = _storyModels.Count > 0;
 
-        _pages.OutputPages(_currentPage, _storyModels.Count);
+        _pagesControl.OutputPagesCount(_currentPage, _storyModels.Count);
     }
 
     private void Awake()
     {
-        _pages.onInputPageChangeValue += InputPageChange;
+        _pagesControl.onInputNextPage += NextPage;
+        _pagesControl.onInputPreviousPage += PreviousPage;
         _deleteButton.onClick.AddListener(DeletePage);
+        //_currentStoryPresenter.onStoryChanged += _previousStoryPresenter.OutputStory;
     }
     private void OnDestroy()
     {
-        _pages.onInputPageChangeValue -= InputPageChange;
+        _pagesControl.onInputNextPage -= NextPage;
+        _pagesControl.onInputPreviousPage -= PreviousPage;
         _deleteButton.onClick.RemoveListener(DeletePage);
+        //_currentStoryPresenter.onStoryChanged -= _previousStoryPresenter.OutputStory;
     }
 
-    private void InputPageChange(int value)
+    private void PreviousPage() 
     {
-        _currentPage = Math.Clamp(_currentPage + value, 0, _storyModels.Count - 1);
-        _storyText.text = _storyModels[_currentPage].ToString();
-        _pages.OutputPages(_currentPage, _storyModels.Count);
+        _currentPage = Math.Clamp(_currentPage - 1, 0, _storyModels.Count - 1);
+        _currentStoryPresenter.OutputStory(_storyModels[_currentPage].ToString(), 0);
+        //_pageAnimation?.SetTrigger(PreviousPageTrigger);
+        _pagesControl.OutputPagesCount(_currentPage, _storyModels.Count);
     }
 
-    private void DeletePage() =>
+    private void NextPage() 
+    {
+        _currentPage = Math.Clamp(_currentPage + 1, 0, _storyModels.Count - 1);
+        _currentStoryPresenter.OutputStory(_storyModels[_currentPage].ToString(), 0);
+        //_pageAnimation?.SetTrigger(NextPageTrigger);
+        _pagesControl.OutputPagesCount(_currentPage, _storyModels.Count);
+    }
+
+    private void DeletePage()
+    {
+        //_pageAnimation?.SetTrigger(DeleteTrigger);
         onInputSavedStoryModelRemove.Invoke(_storyModels[_currentPage]);
+    }
 }

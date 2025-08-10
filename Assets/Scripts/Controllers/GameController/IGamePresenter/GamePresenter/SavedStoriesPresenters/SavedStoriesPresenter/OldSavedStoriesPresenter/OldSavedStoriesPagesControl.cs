@@ -1,9 +1,10 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-internal class Pages : MonoBehaviour
+internal class OldSavedStoriesPagesControl : MonoBehaviour
 {
     [SerializeField] private TMP_Text _pagesText;
     [SerializeField] private TMP_Text[] _buttonsTexts;
@@ -11,7 +12,12 @@ internal class Pages : MonoBehaviour
     [SerializeField] private Button _nextPageButton;
     [SerializeField] private string _pagesDevider;
 
-    internal Action<int> onInputPageChangeValue;
+    internal event UnityAction onInputNextPage;
+    /*{
+        add => _nextPageButton.onClick.AddListener(NextPage);
+        remove => _nextPageButton.onClick.RemoveListener(NextPage);
+    }*/
+    internal Action onInputPreviousPage;
 
     internal void OutputFont(TMP_FontAsset font)
     {
@@ -21,7 +27,7 @@ internal class Pages : MonoBehaviour
             text.font = font;
     }
 
-    internal void OutputPages(int currentPage, int totalPages)
+    internal void OutputPagesCount(int currentPage, int totalPages)
     {
         _nextPageButton.interactable = currentPage < totalPages - 1;
         _previousPageButton.interactable = currentPage > 0;
@@ -41,8 +47,8 @@ internal class Pages : MonoBehaviour
     }
 
     private void NextPage() =>
-        onInputPageChangeValue.Invoke(+1);
+        onInputNextPage.Invoke();
 
     private void PreviousPage() =>
-        onInputPageChangeValue.Invoke(-1);
+        onInputPreviousPage.Invoke();
 }

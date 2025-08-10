@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3806153656498637037}
   - component: {fileID: 7156909237539048654}
   m_Layer: 5
-  m_Name: UITextButton
+  m_Name: TextButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8090527147152284879, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
       propertyPath: m_Name
-      value: UIText (TMP)
+      value: Text (TMP)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

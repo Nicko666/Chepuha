@@ -9,6 +9,7 @@ public class QuestionnaireController : IQuestionnaireController
     private PlayersController _playersController = new ();
     
     public event Action<QuestionnaireModel> onQuestionnaireModel;
+    public event Action<StringBuilder> onAnswerModelChanged;
 
     public void SetBoundsModel(Vector2Int playersBounds)
     {
@@ -79,7 +80,7 @@ public class QuestionnaireController : IQuestionnaireController
     public void SetAnswerModel(StringBuilder answerModel, string text)
     {
         _playersController.SetAnswerModel(answerModel, text);
-
+        //onAnswerModelChanged.Invoke(answerModel);
         onQuestionnaireModel.Invoke(_questionnaireModel);
     }
 
