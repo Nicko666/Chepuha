@@ -5,8 +5,7 @@ using UnityEngine;
 
 internal class OldQuestionsPresenter : MonoBehaviour
 {
-    [SerializeField] private OldQuestionPresenter _oldQuestionPresenterCurrent;
-    //[SerializeField] private OldQuestionPresenter _oldQuestionPresenterPrevious;
+    [SerializeField] private OldQuestionPresenter _oldQuestionPresenter;
     [SerializeField] private OldQueuePresenter _oldQueuePresenter;
 
     QuestionnaireModel _questionnaireModel;
@@ -14,8 +13,8 @@ internal class OldQuestionsPresenter : MonoBehaviour
 
     internal event Action<StringBuilder, string> onInputAnswerModel
     {
-        add => _oldQuestionPresenterCurrent.onInputAnswerModel += value;
-        remove => _oldQuestionPresenterCurrent.onInputAnswerModel -= value;
+        add => _oldQuestionPresenter.onInputAnswerModel += value;
+        remove => _oldQuestionPresenter.onInputAnswerModel -= value;
     }
     internal event Action onInputStories
     {
@@ -30,7 +29,7 @@ internal class OldQuestionsPresenter : MonoBehaviour
 
     internal void OutputFontModel(TMP_FontAsset fontModel) 
     {
-        _oldQuestionPresenterCurrent.OutputFontModel(fontModel);
+        _oldQuestionPresenter.OutputFontModel(fontModel);
         _oldQueuePresenter.OutputFontModel(fontModel);
     }
 
@@ -55,10 +54,12 @@ internal class OldQuestionsPresenter : MonoBehaviour
 
     private void Awake()
     {
-        _oldQueuePresenter.onInputQuestion += _oldQuestionPresenterCurrent.OutputQuestion;
+        _oldQueuePresenter.onInputQuestion += _oldQuestionPresenter.OutputQuestion;
+        _oldQuestionPresenter.onSubmitAnswerModel += _oldQueuePresenter.OutputSubmit;
     }
     private void OnDestroy()
     {
-        _oldQueuePresenter.onInputQuestion -= _oldQuestionPresenterCurrent.OutputQuestion;
+        _oldQueuePresenter.onInputQuestion -= _oldQuestionPresenter.OutputQuestion;
+        _oldQuestionPresenter.onSubmitAnswerModel -= _oldQueuePresenter.OutputSubmit;
     }
 }

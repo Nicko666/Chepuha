@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5698870847208295393}
   - component: {fileID: 1835599387068090765}
   - component: {fileID: 3806153656498637037}
-  - component: {fileID: 7156909237539048654}
+  - component: {fileID: 4552271331355513623}
   m_Layer: 5
   m_Name: TextButton
   m_TagString: Untagged
@@ -97,7 +97,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0.5}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.5}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!95 &7156909237539048654
+--- !u!95 &4552271331355513623
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ Animator:
   m_GameObject: {fileID: 8373466482774830513}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0fd5a4b6b56df4041b17b474e2d9429f, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce660e123e3767f429220178b7db0624, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -142,8 +142,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 1
+  m_WriteDefaultValuesOnDisable: 1
 --- !u!1001 &6791241070828966608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -158,7 +158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1205277581963069026, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
       propertyPath: m_Pivot.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1205277581963069026, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
       propertyPath: m_AnchorMax.x
@@ -234,13 +234,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8090527147152284879, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
       propertyPath: m_Name
-      value: Text (TMP)
+      value: Image
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8090527147152284879, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8796861689599858721}
   m_SourcePrefab: {fileID: 100100000, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
+--- !u!1 &3348433291826384415 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8090527147152284879, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
+  m_PrefabInstance: {fileID: 6791241070828966608}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &8796861689599858721
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3348433291826384415}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!224 &5658021237527106738 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1205277581963069026, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
@@ -251,7 +271,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4260261811722585011, guid: 6642793a63738a14f8622dac4fe0b7a8, type: 3}
   m_PrefabInstance: {fileID: 6791241070828966608}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3348433291826384415}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}

@@ -17,18 +17,18 @@ public class OldQueuePresenter : MonoBehaviour
 
     internal Action onInputSettings;
     internal Action onInputStories;
-    internal Action<int, QuestionModel, StringBuilder> onInputQuestion;
+    internal Action<int, QuestionModel, StringBuilder, bool> onInputQuestion;
 
     internal void Reset()
     {
         _currentIndex = 0;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, false);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
     private void OutputQueuePosition(int index, int maxIndex)
     {
         _previousButton.gameObject.SetActive(index > 0);
-        _settingsButton.gameObject.SetActive(index == 0);
+        //_settingsButton.gameObject.SetActive(index == 0);
         _nextButton.gameObject.SetActive(index < maxIndex);
         _storiesButton.gameObject.SetActive(index >= maxIndex);
     }
@@ -54,12 +54,21 @@ public class OldQueuePresenter : MonoBehaviour
 
         if (_queue.Count < 1) return;
 
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, false);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
 
     internal void OutputFontModel(TMP_FontAsset fontModel) =>
         Array.ForEach(_fontTexts, fontText => fontText.font = fontModel);
+
+    internal void OutputSubmit()
+    {
+        if (_currentIndex >= _queue.Count) return;
+
+        _currentIndex += 1;
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, true);
+        OutputQueuePosition(_currentIndex, _queue.Count - 1);
+    }
 
     private void Awake()
     {
@@ -81,14 +90,14 @@ public class OldQueuePresenter : MonoBehaviour
     private void InputPrevious()
     {
         _currentIndex -= 1;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, false);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
 
     private void InputNext()
     {
         _currentIndex += 1;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, true);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
 }
