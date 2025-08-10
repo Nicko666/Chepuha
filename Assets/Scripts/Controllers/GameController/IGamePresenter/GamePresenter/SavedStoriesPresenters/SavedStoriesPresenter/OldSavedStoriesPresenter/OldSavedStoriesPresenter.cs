@@ -58,7 +58,7 @@ internal class OldSavedStoriesPresenter : SavedStoriesPresenter
     private void PreviousPage() 
     {
         _currentPage = Math.Clamp(_currentPage - 1, 0, _storyModels.Count - 1);
-        _currentStoryPresenter.OutputStory(_storyModels[_currentPage].ToString(), 0);
+        _currentStoryPresenter.OutputStory(_storyModels[_currentPage].ToString(), 1);
         //_pageAnimation?.SetTrigger(PreviousPageTrigger);
         _pagesControl.OutputPagesCount(_currentPage, _storyModels.Count);
     }
@@ -66,7 +66,7 @@ internal class OldSavedStoriesPresenter : SavedStoriesPresenter
     private void NextPage() 
     {
         _currentPage = Math.Clamp(_currentPage + 1, 0, _storyModels.Count - 1);
-        _currentStoryPresenter.OutputStory(_storyModels[_currentPage].ToString(), 0);
+        _currentStoryPresenter.OutputStory(_storyModels[_currentPage].ToString(), 1);
         //_pageAnimation?.SetTrigger(NextPageTrigger);
         _pagesControl.OutputPagesCount(_currentPage, _storyModels.Count);
     }

@@ -42,7 +42,11 @@ public class GameSceneMain : Main
             _gamePresenter,
             _loadingPresenter
         );
-    }
+
+        //Debug.Log($"Current frame rate = {Application.targetFrameRate}");
+        //Debug.Log($"Target frame rate = {(int)Screen.currentResolution.refreshRateRatio.numerator}");
+        Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.numerator;
+}
     protected override void OnDestroy()
     {
         base.OnDestroy();

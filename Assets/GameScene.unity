@@ -513,7 +513,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &127511984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2056,7 +2056,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &552306101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3604,6 +3604,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1303929650}
     m_Modifications:
+    - target: {fileID: 2227986917078629782, guid: efd9f56218c465249a93183048400ded, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 3261125304600597670, guid: efd9f56218c465249a93183048400ded, type: 3}
       propertyPath: m_Size
       value: 1
@@ -3638,7 +3642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8783913250950482388, guid: efd9f56218c465249a93183048400ded, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8783913250950482388, guid: efd9f56218c465249a93183048400ded, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3733,6 +3737,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4663292521427448411, guid: efd9f56218c465249a93183048400ded, type: 3}
   m_PrefabInstance: {fileID: 1045159642}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1045159645 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4425368310357597732, guid: efd9f56218c465249a93183048400ded, type: 3}
+  m_PrefabInstance: {fileID: 1045159642}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1057637331 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7915274110235968215, guid: 7856ff5d5b7c93f42be990b37cf1e605, type: 3}
@@ -4542,6 +4557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playersPresenter: {fileID: 881729359}
   _storiesPresenter: {fileID: 1191611715}
+  _scrollRect: {fileID: 1045159645}
 --- !u!114 &1308120594 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7915274110235968215, guid: 7856ff5d5b7c93f42be990b37cf1e605, type: 3}
@@ -7033,7 +7049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5684913716222752301, guid: c6050641730d22741bb47355aa892fd4, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5684913716222752301, guid: c6050641730d22741bb47355aa892fd4, type: 3}
       propertyPath: m_AnchorMax.x
@@ -7093,7 +7109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5684913716222752301, guid: c6050641730d22741bb47355aa892fd4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 5684913716222752301, guid: c6050641730d22741bb47355aa892fd4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

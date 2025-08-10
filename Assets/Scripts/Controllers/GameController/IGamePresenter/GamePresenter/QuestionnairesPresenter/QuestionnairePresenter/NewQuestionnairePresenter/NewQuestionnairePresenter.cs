@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 internal class NewQuestionnairePresenter : QuestionnairePresenter
 {
     [SerializeField] private NewPlayersPresenter _playersPresenter;
     [SerializeField] private NewStoriesPresenter _storiesPresenter;
+    [SerializeField] private ScrollRect _scrollRect;
 
     internal override event Action onInputAddNewAnswerModels;
     internal override event Action<int> onInputPlayersCountModel;
@@ -41,6 +43,7 @@ internal class NewQuestionnairePresenter : QuestionnairePresenter
         _playersPresenter.onInputRemovePlayerModel += InputRemovePlayerModel;
         _playersPresenter.onInputAddPlayerModels += InputAddNewAnswerModels;
         _playersPresenter.onInputClearPlayerModel += InputClearPlayerModel;
+        _playersPresenter.onInputScroll += InputScroll;
         _storiesPresenter.onInputSaveStoryModel += InputSaveStoryModel;
     }
     private void OnDestroy()
@@ -51,6 +54,7 @@ internal class NewQuestionnairePresenter : QuestionnairePresenter
         _playersPresenter.onInputRemovePlayerModel -= InputRemovePlayerModel;
         _playersPresenter.onInputAddPlayerModels -= InputAddNewAnswerModels;
         _playersPresenter.onInputClearPlayerModel -= InputClearPlayerModel;
+        _playersPresenter.onInputScroll -= InputScroll;
         _storiesPresenter.onInputSaveStoryModel -= InputSaveStoryModel;
     }
 
@@ -77,4 +81,10 @@ internal class NewQuestionnairePresenter : QuestionnairePresenter
 
     internal override void OutputQueueModel(int queueModel) { }
     internal override void OutputQueuesModel(List<int> queuesModel) { }
+
+    private void InputScroll(RectTransform rect)
+    {
+        float positionY = _scrollRect.viewport.position.y + (_scrollRect.content.position.y - rect.position.y);
+        _scrollRect.content.position = new(_scrollRect.content.position.x, positionY);
+    }
 }

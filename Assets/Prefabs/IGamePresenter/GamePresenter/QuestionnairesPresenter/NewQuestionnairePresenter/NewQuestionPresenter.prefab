@@ -822,6 +822,7 @@ MonoBehaviour:
   _questionText: {fileID: 2750263527584816253}
   _answerInputField: {fileID: 7197798104003053}
   _randomAnswerButton: {fileID: 2438165739760202691}
+  _rectTransform: {fileID: 3066441163512107611}
 --- !u!222 &4503880392066711726
 CanvasRenderer:
   m_ObjectHideFlags: 0

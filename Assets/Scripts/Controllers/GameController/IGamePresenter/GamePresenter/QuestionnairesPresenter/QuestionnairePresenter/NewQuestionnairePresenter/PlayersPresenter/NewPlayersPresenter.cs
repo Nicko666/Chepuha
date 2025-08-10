@@ -19,6 +19,7 @@ internal class NewPlayersPresenter : MonoBehaviour
     internal Action onInputAddPlayerModels;
     internal Action<StringBuilder[]> onInputRemovePlayerModel;
     internal Action<StringBuilder[]> onInputClearPlayerModel;
+    internal Action<RectTransform> onInputScroll;
 
     internal void OutputFontModel(TMP_FontAsset fontModel)
     {
@@ -38,6 +39,7 @@ internal class NewPlayersPresenter : MonoBehaviour
             presenter.onInputAnswerSubmit += InputAnswerSubmit;
             presenter.onInputClearPlayerModel += InputClearPlayerModel;
             presenter.onInputRemovePlayerModel += InputRemovePlayerModel;
+            presenter.onInputScroll += InputScroll;
             
             if (_fontModel != null) presenter.OutputFontModel(_fontModel);
             _playerPresenters.Add(new (presenter, null));
@@ -50,6 +52,7 @@ internal class NewPlayersPresenter : MonoBehaviour
             presenter.onInputAnswerSubmit -= InputAnswerSubmit;
             presenter.onInputClearPlayerModel -= InputClearPlayerModel;
             presenter.onInputRemovePlayerModel -= InputRemovePlayerModel;
+            presenter.onInputScroll -= InputScroll;
 
             _playerPresenters.Remove(_playerPresenters[^1]);
             Destroy(presenter.gameObject);
@@ -94,4 +97,7 @@ internal class NewPlayersPresenter : MonoBehaviour
     
     private void InputClearPlayerModel(NewPlayerPresenter presenter) =>
         onInputClearPlayerModel.Invoke(_playerPresenters.Find(i => i.presenter == presenter).playerModel);
+
+    private void InputScroll(RectTransform rectTransform) =>
+        onInputScroll.Invoke(rectTransform);
 }

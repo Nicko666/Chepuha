@@ -20,6 +20,7 @@ internal class NewPlayerPresenter : MonoBehaviour
     internal Action<StringBuilder> onInputAnswerSubmit;
     internal Action<NewPlayerPresenter> onInputRemovePlayerModel;
     internal Action<NewPlayerPresenter> onInputClearPlayerModel;
+    internal Action<RectTransform> onInputScroll;
 
     internal void OutputQuestionsModel(QuestionModel[] questionsModel)
     {
@@ -29,6 +30,7 @@ internal class NewPlayerPresenter : MonoBehaviour
             presenter = Instantiate(_questionPresenterPrefab, _questionPresentersContent);
             presenter.onInputAnswerChanged += InputAnswerChanged;
             presenter.onInputAnswerSubmit += InputAnswerSubmit;
+            presenter.onSelectAnswer += InputScroll;
             _questionPresenters.Add(new (presenter, null, null));
 
             if (_fontModel != null) presenter.OutputFontModel(_fontModel);
@@ -39,6 +41,7 @@ internal class NewPlayerPresenter : MonoBehaviour
             NewQuestionPresenter presenter = _questionPresenters[^1].presenter;
             presenter.onInputAnswerChanged -= InputAnswerChanged;
             presenter.onInputAnswerSubmit -= InputAnswerSubmit;
+            presenter.onSelectAnswer -= InputScroll; 
             Destroy(presenter.gameObject);
             _questionPresenters.RemoveAll(i => i.presenter == presenter);
         }
@@ -96,7 +99,9 @@ internal class NewPlayerPresenter : MonoBehaviour
     private void InputClearPlayerButton() =>
         onInputClearPlayerModel.Invoke(this);
 
-
     private void InputAnswerSubmit(StringBuilder answerModel) =>
         onInputAnswerSubmit.Invoke(answerModel);
+
+    private void InputScroll(RectTransform rectTransform) =>
+        onInputScroll.Invoke(rectTransform);
 }

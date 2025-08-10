@@ -9,12 +9,14 @@ internal class NewQuestionPresenter : MonoBehaviour
     [SerializeField] private TMP_Text _questionText;
     [SerializeField] private TMP_InputField _answerInputField;
     [SerializeField] private Button _randomAnswerButton;
+    [SerializeField] private RectTransform _rectTransform;
 
     private string[] _randomAnswers;
     private StringBuilder _answerModel;
 
     internal Action<StringBuilder, string> onInputAnswerChanged;
     internal Action<StringBuilder> onInputAnswerSubmit;
+    internal Action<RectTransform> onSelectAnswer;
 
     internal void OutputQuestionModel(QuestionModel questionModel)
     {
@@ -39,14 +41,14 @@ internal class NewQuestionPresenter : MonoBehaviour
         _answerInputField.onEndEdit.AddListener(InputAnswerChanged);
         //_answerInputField.onTouchScreenKeyboardStatusChanged
         _answerInputField.onSubmit.AddListener(InputAnswerSubmit);
-        _answerInputField.onSelect.AddListener(OutputAnserSelected);
+        _answerInputField.onSelect.AddListener(InputAnserSelected);
         _randomAnswerButton.onClick.AddListener(InputRandomAnswer);
     }
     private void OnDestroy()
     {
         _answerInputField.onEndEdit.RemoveListener(InputAnswerChanged);
         _answerInputField.onSubmit.RemoveListener(InputAnswerSubmit);
-        _answerInputField.onSelect.RemoveListener(OutputAnserSelected);
+        _answerInputField.onSelect.RemoveListener(InputAnserSelected);
         _randomAnswerButton.onClick.RemoveListener(InputRandomAnswer);
     }
 
@@ -65,6 +67,9 @@ internal class NewQuestionPresenter : MonoBehaviour
     private void InputAnswerSubmit(string text) =>
         onInputAnswerSubmit.Invoke(_answerModel);
 
-    private void OutputAnserSelected(string text) =>
+    private void InputAnserSelected(string text)
+    {
         _answerInputField.MoveToEndOfLine(false, false);
+        onSelectAnswer.Invoke(_rectTransform);
+    }
 }
