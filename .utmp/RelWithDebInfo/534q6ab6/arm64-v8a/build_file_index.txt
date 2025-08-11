@@ -1,0 +1,2 @@
+N:\Unity Projects\N\Chepuha\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+N:\Unity Projects\N\Chepuha\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt

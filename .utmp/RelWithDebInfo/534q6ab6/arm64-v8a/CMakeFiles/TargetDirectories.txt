@@ -1,0 +1,5 @@
+N:/Unity Projects/N/Chepuha/.utmp/RelWithDebInfo/534q6ab6/arm64-v8a/CMakeFiles/edit_cache.dir
+N:/Unity Projects/N/Chepuha/.utmp/RelWithDebInfo/534q6ab6/arm64-v8a/CMakeFiles/rebuild_cache.dir
+N:/Unity Projects/N/Chepuha/.utmp/RelWithDebInfo/534q6ab6/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+N:/Unity Projects/N/Chepuha/.utmp/RelWithDebInfo/534q6ab6/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+N:/Unity Projects/N/Chepuha/.utmp/RelWithDebInfo/534q6ab6/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir
