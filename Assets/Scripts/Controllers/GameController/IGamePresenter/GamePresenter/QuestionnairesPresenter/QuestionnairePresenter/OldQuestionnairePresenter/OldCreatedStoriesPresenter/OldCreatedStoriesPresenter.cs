@@ -38,6 +38,9 @@ public class OldCreatedStoriesPresenter : MonoBehaviour
 
     internal void OutputCreatedStoriesModel(List<StringBuilder> storiesModel)
     {
+        if (_createdStoriesModel != storiesModel)
+            _currentPage = 0;
+
         _createdStoriesModel = storiesModel;
         
         _currentPage = Math.Clamp(_currentPage, 0, _createdStoriesModel.Count - 1);

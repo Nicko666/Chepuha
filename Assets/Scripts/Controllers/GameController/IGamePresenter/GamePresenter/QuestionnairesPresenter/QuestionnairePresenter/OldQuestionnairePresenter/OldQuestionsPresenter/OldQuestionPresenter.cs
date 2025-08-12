@@ -26,7 +26,8 @@ public class OldQuestionPresenter : MonoBehaviour
         _questionText.text = question.questionText;
         _answerInputField.SetTextWithoutNotify(_answerModel.ToString());
 
-        _answerInputField.MoveToEndOfLine(false, true);
+        if (_answerInputField.isActiveAndEnabled)
+            _answerInputField.MoveToEndOfLine(false, true);
     }
 
     internal void OutputSelect()

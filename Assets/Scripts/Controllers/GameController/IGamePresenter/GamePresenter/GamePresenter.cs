@@ -7,12 +7,12 @@ using UnityEngine;
 public class GamePresenter : IGamePresenter
 {
     [SerializeField] private BackgroundPresenter _backgroundPresenter;
-    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private UIPanelsPresenter _panelsPresenter;
     [SerializeField] private UIButtonsPresenter _buttonsPresenter;
     [SerializeField] private SettingsPresenter _settingsPresenter;
     [SerializeField] private QuestionnairesPresenters _questionnairePresenters;
     [SerializeField] private SavedStoriesPresenters _savedStoriesPresenters;
+    [SerializeField] private SoundPresenter _soundPresenter;
 
     public override event Action<TMP_FontAsset> onInputFont;
     public override event Action<Color> onInputBackground;
@@ -27,13 +27,8 @@ public class GamePresenter : IGamePresenter
     public override event Action<StringBuilder[]> onInputClearPlayerModel;
     public override event Action onInputAddNewAnswerModels;
     public override event Action<StringBuilder, string> onInputAnswerModel;
-    public override event Action<int> onInputQueueModel
-    {
-        add => _questionnairePresenters.onInputQueueModel += value;
-        remove => _questionnairePresenters.onInputQueueModel -= value;
-    }
+    public override event Action<int> onInputQueueModel;
 
-    //settings
     public override void OutputBackgroundsModel(List<Color> colors) =>
         _settingsPresenter.OutputBackgroundsModel(colors);
     public override void OutputBackgroundModel(Color backgroundModel)
@@ -54,8 +49,8 @@ public class GamePresenter : IGamePresenter
         _settingsPresenter.OutputVolumeBoundsModel(bounds);
     public override void OutputVolumeModel(float value)
     {
-        _audioSource.volume = value;
-        _settingsPresenter.OutputVolumeModel(_audioSource.volume);
+        _soundPresenter.OutputVolume(value);
+        _settingsPresenter.OutputVolumeModel(value);
     }
 
     public override void OutputPresentersModel(List<int> values) => 
@@ -93,7 +88,7 @@ public class GamePresenter : IGamePresenter
 
     private void Awake()
     {
-        _buttonsPresenter.onInput += _panelsPresenter.Output;
+        _buttonsPresenter.onInput += OutputPanelModel;
         _panelsPresenter.onPanelChanged += _buttonsPresenter.Output;
         _savedStoriesPresenters.onInputSavedStoryModelRemove += InputSavedStoryModelRemove;
         
@@ -110,10 +105,11 @@ public class GamePresenter : IGamePresenter
         _questionnairePresenters.onInputAddNewAnswerModels += InputAddNewAnswerModels;
         _questionnairePresenters.onInputAnswerModel += InputAnswerModel;
         _questionnairePresenters.onInputAddSavedStoryModel += InputAddSavedStoryModel;
+        _questionnairePresenters.onInputQueueModel += InputQueueModel;
     }
     private void OnDestroy()
     {
-        _buttonsPresenter.onInput -= _panelsPresenter.Output;
+        _buttonsPresenter.onInput -= OutputPanelModel;
         _panelsPresenter.onPanelChanged -= _buttonsPresenter.Output;
         _savedStoriesPresenters.onInputSavedStoryModelRemove -= InputSavedStoryModelRemove;
         
@@ -130,34 +126,81 @@ public class GamePresenter : IGamePresenter
         _questionnairePresenters.onInputAddNewAnswerModels -= InputAddNewAnswerModels;
         _questionnairePresenters.onInputAnswerModel -= InputAnswerModel;
         _questionnairePresenters.onInputAddSavedStoryModel -= InputAddSavedStoryModel;
+        _questionnairePresenters.onInputQueueModel -= InputQueueModel;
     }
 
-    private void InputVolume(float volume) =>
+    private void OutputPanelModel(int index)
+    {
+        _panelsPresenter.Output(index);
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputVolume(float volume)
+    {
         onInputVolume.Invoke(volume);
-    private void InputBackground(Color color) => 
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputBackground(Color color)
+    {
         onInputBackground.Invoke(color);
-    private void InputVignette(float value) =>
+        _soundPresenter.OutputInputSound();
+    } 
+    private void InputVignette(float value)
+    {
         onInputVignette.Invoke(value);
-    private void InputFont(TMP_FontAsset font) => 
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputFont(TMP_FontAsset font)
+    {
         onInputFont.Invoke(font);
-    private void InputPresenter(int value) =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputPresenter(int value)
+    {
         onInputPresenter.Invoke(value);
-    private void InputSavedStoryModelRemove(StringBuilder savedStoryModel) =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputSavedStoryModelRemove(StringBuilder savedStoryModel)
+    {
         onInputSavedStoryModelRemove.Invoke(savedStoryModel);
-    private void InputQuestionsModel(QuestionsData questionsData) =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputQuestionsModel(QuestionsData questionsData)
+    {
         onInputQuestionsModel.Invoke(questionsData);
-    private void InputPlayersCountModel(int playersCountModel) =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputPlayersCountModel(int playersCountModel)
+    {
         onInputPlayersCountModel.Invoke(playersCountModel);
-    private void InputRemovePlayerModel(StringBuilder[] playerModel) =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputRemovePlayerModel(StringBuilder[] playerModel)
+    {
         onInputRemovePlayerModel.Invoke(playerModel);
-    private void InputClearPlayerModel(StringBuilder[] playerModel) =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputClearPlayerModel(StringBuilder[] playerModel)
+    {
         onInputClearPlayerModel(playerModel);
-    private void InputAddNewAnswerModels() =>
+        _soundPresenter.OutputInputSound();
+    }
+    private void InputAddNewAnswerModels()
+    {
         onInputAddNewAnswerModels.Invoke();
+        _soundPresenter.OutputInputSound();
+    }
     private void InputAnswerModel(StringBuilder answer, string text) =>
         onInputAnswerModel.Invoke(answer, text);
-    private void InputAddSavedStoryModel(StringBuilder storyModel) =>
+    private void InputAddSavedStoryModel(StringBuilder storyModel)
+    {
         onInputAddSavedStoryModel.Invoke(storyModel);
+        _soundPresenter.OutputInputSound();
+    }
 
-    
+
+    private void InputQueueModel(int queueModel)
+    {
+        onInputQueueModel.Invoke(queueModel);
+        _soundPresenter.OutputInputSound();
+    }
 }
