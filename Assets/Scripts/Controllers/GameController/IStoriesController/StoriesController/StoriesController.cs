@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class StoriesController : IStoriesController
 {
@@ -42,19 +43,23 @@ public class StoriesController : IStoriesController
             int tempPlayerNumber = i;
             for (int j = 0; j < answersCount; j++)
             {
-                _createdStories[i].Append(addedAnswers[tempPlayerNumber % playersCount][j]);
+                StringBuilder answer = addedAnswers[tempPlayerNumber % playersCount][j];
+
+                if (answer.Length > 0 && questionnairesModel.questionsModel[j].isUppercase)
+                    answer = new StringBuilder().Append(char.ToUpper(answer[0])).Append(answer, 1, answer.Length - 1);
+
+                _createdStories[i].Append(answer);
                 _createdStories[i].Append(questionnairesModel.questionsModel[j].textAfter);
 
                 tempPlayerNumber++;
             }
         }
-        //for (int i = 0; i < _createdStories.Count; i++) Debug.Log($"Created Storie {i}: {_createdStories[i].ToString()}");
+        
         onCreatedStorieModelsChanged.Invoke(_createdStories);
     }
 
     public void AddSavedStoryModel(StringBuilder storyModel)
     {
-        //Debug.Log("Story: " + storyModel + " - is added");
         _savedStories.Add(storyModel);
 
         onSavedStorieModelsChanged.Invoke(_savedStories);

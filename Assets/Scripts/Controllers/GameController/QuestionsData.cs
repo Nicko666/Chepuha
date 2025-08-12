@@ -16,4 +16,5 @@ public class QuestionData
     [SerializeField] public TextAsset _randomAnswers;
     public string[] RandomAnswer => Regex.Split(_randomAnswers.text, "\n|\r\n");
     [field: SerializeField] public string TextAfter { get; private set; }
+    [field: SerializeField] public bool isUppercase { get; private set; }
 }

@@ -19,7 +19,7 @@ public class GameSceneMain : Main
     private IQuestionnaireController _questionnaireController = new QuestionnaireController();
     private IStoriesController _storiesController = new StoriesController();
 
-    GameController _gameController;
+    private GameController _gameController;
 
     protected override void Awake()
     {
@@ -43,8 +43,6 @@ public class GameSceneMain : Main
             _loadingPresenter
         );
 
-        //Debug.Log($"Current frame rate = {Application.targetFrameRate}");
-        //Debug.Log($"Target frame rate = {(int)Screen.currentResolution.refreshRateRatio.numerator}");
         Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.numerator;
 }
     protected override void OnDestroy()

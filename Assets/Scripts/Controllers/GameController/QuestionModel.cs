@@ -1,17 +1,15 @@
-using System;
-using UnityEngine;
-
-[Serializable]
 public class QuestionModel
 {
-    [field: SerializeField] public string questionText { get; private set; }
-    [field: SerializeField] public string[] randomAnswers { get; private set; }
-    [field: SerializeField] public string textAfter { get; private set; }
+    public readonly string questionText;
+    public readonly string[] randomAnswers;
+    public readonly string textAfter;
+    public readonly bool isUppercase;
 
-    public QuestionModel(string questionText, string[] randomAnswers, string textAfter)
+    public QuestionModel(string questionText, string[] randomAnswers, string textAfter, bool isUppercase)
     {
         this.questionText = questionText;
         this.randomAnswers = randomAnswers;
         this.textAfter = textAfter;
+        this.isUppercase = isUppercase;
     }
 }

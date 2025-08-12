@@ -39,7 +39,6 @@ internal class NewQuestionPresenter : MonoBehaviour
     private void Awake()
     {
         _answerInputField.onEndEdit.AddListener(InputAnswerChanged);
-        //_answerInputField.onTouchScreenKeyboardStatusChanged
         _answerInputField.onSubmit.AddListener(InputAnswerSubmit);
         _answerInputField.onSelect.AddListener(InputAnserSelected);
         _randomAnswerButton.onClick.AddListener(InputRandomAnswer);
@@ -69,7 +68,7 @@ internal class NewQuestionPresenter : MonoBehaviour
 
     private void InputAnserSelected(string text)
     {
-        _answerInputField.MoveToEndOfLine(false, false);
+        _answerInputField.MoveToEndOfLine(false, true);
         onSelectAnswer.Invoke(_rectTransform);
     }
 }

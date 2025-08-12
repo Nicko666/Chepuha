@@ -36,7 +36,7 @@ public class QuestionnaireController : IQuestionnaireController
 
     public void SetQuestionsModel(QuestionsData questionsData)
     {
-        _questionnaireModel.questionsModel = questionsData.QuestionModels.ConvertAll(i => new QuestionModel(i.Question, i.RandomAnswer, i.TextAfter)).ToArray();
+        _questionnaireModel.questionsModel = questionsData.QuestionModels.ConvertAll(i => new QuestionModel(i.Question, i.RandomAnswer, i.TextAfter, i.isUppercase)).ToArray();
 
         _playersController.SetPlayersModelCount(_questionnaireModel.playersModel, _questionnaireModel.playersModel.Count, _questionnaireModel.questionsModel.Length);
 

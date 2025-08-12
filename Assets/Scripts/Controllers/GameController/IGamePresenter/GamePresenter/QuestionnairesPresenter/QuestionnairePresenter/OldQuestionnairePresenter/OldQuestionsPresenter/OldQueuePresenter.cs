@@ -17,18 +17,18 @@ public class OldQueuePresenter : MonoBehaviour
 
     internal Action onInputSettings;
     internal Action onInputStories;
-    internal Action<int, QuestionModel, StringBuilder, bool> onInputQuestion;
+    internal Action<int, QuestionModel, StringBuilder> onInputQuestion;
+    internal Action onInputSelect;
 
     internal void Reset()
     {
         _currentIndex = 0;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, false);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
     private void OutputQueuePosition(int index, int maxIndex)
     {
         _previousButton.gameObject.SetActive(index > 0);
-        //_settingsButton.gameObject.SetActive(index == 0);
         _nextButton.gameObject.SetActive(index < maxIndex);
         _storiesButton.gameObject.SetActive(index >= maxIndex);
     }
@@ -54,7 +54,7 @@ public class OldQueuePresenter : MonoBehaviour
 
         if (_queue.Count < 1) return;
 
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, false);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
 
@@ -63,11 +63,12 @@ public class OldQueuePresenter : MonoBehaviour
 
     internal void OutputSubmit()
     {
-        if (_currentIndex >= _queue.Count) return;
+        if (_currentIndex >= _queue.Count - 1) return;
 
         _currentIndex += 1;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, true);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        onInputSelect.Invoke();
     }
 
     private void Awake()
@@ -85,19 +86,34 @@ public class OldQueuePresenter : MonoBehaviour
         _storiesButton.onClick.RemoveListener(InputStories);
     }
 
-    private void InputSettings() => onInputSettings.Invoke();
-    private void InputStories() => onInputStories.Invoke();
+    private void InputSettings()
+    {
+        _currentIndex = 0;
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        OutputQueuePosition(_currentIndex, _queue.Count - 1);
+
+        onInputSettings.Invoke();
+    }
+    private void InputStories()
+    {
+        _currentIndex = 0;
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
+        OutputQueuePosition(_currentIndex, _queue.Count - 1);
+
+        onInputStories.Invoke();
+    }
     private void InputPrevious()
     {
         _currentIndex -= 1;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, false);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
     }
 
     private void InputNext()
     {
         _currentIndex += 1;
-        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel, true);
+        onInputQuestion.Invoke(_queue[_currentIndex].playerIndex, _queue[_currentIndex].questionModel, _queue[_currentIndex].answerModel);
         OutputQueuePosition(_currentIndex, _queue.Count - 1);
+        onInputSelect.Invoke();
     }
 }

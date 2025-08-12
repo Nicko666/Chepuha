@@ -5,6 +5,7 @@ using UnityEngine;
 
 internal class OldQuestionsPresenter : MonoBehaviour
 {
+    internal Action onInputAddNewAnswerModels;
     [SerializeField] private OldQuestionPresenter _oldQuestionPresenter;
     [SerializeField] private OldQueuePresenter _oldQueuePresenter;
 
@@ -55,6 +56,7 @@ internal class OldQuestionsPresenter : MonoBehaviour
     private void Awake()
     {
         _oldQueuePresenter.onInputQuestion += _oldQuestionPresenter.OutputQuestion;
+        _oldQueuePresenter.onInputSelect += _oldQuestionPresenter.OutputSelect;
         _oldQuestionPresenter.onSubmitAnswerModel += _oldQueuePresenter.OutputSubmit;
     }
     private void OnDestroy()
